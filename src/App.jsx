@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom' // ← Aqui trocamos BrowserRouter por HashRouter
 import './App.css'
 
-// Páginas
+// 🏠 Páginas
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import VerifyPage from './pages/VerifyPage'
@@ -15,7 +15,7 @@ import ContactPage from './pages/ContactPage'
 import TermsPage from './pages/TermsPage'
 import PrivacyPage from './pages/PrivacyPage'
 
-// Componentes
+// 🌐 Componentes
 import LanguageModal from './components/LanguageModal'
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   const [selectedLanguage, setSelectedLanguage] = useState('pt-BR')
 
   useEffect(() => {
-    // Verificar se o usuário já selecionou um idioma
+    // Verifica se o usuário já escolheu o idioma
     const savedLanguage = localStorage.getItem('selectedLanguage')
     if (!savedLanguage) {
       setShowLanguageModal(true)
@@ -40,10 +40,13 @@ function App() {
 
   return (
     <Router>
-      <LanguageModal 
-        isOpen={showLanguageModal} 
+      {/* Modal de idioma */}
+      <LanguageModal
+        isOpen={showLanguageModal}
         onSelect={handleLanguageSelect}
       />
+
+      {/* Rotas principais */}
       <Routes>
         <Route path="/" element={<HomePage language={selectedLanguage} />} />
         <Route path="/register" element={<RegisterPage language={selectedLanguage} />} />
@@ -62,4 +65,3 @@ function App() {
 }
 
 export default App
-
