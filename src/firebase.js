@@ -1,19 +1,27 @@
+// Importa funções do SDK
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
-// Credenciais fictícias (substituir pelas credenciais reais do usuário)
+// Configuração do Firebase
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCdQbnUweA99ag2QQm1rSVUSsvwmQ1S1WI",
+  authDomain: "movu-4e906.firebaseapp.com",
+  projectId: "movu-4e906",
+  storageBucket: "movu-4e906.firebasestorage.app",
+  messagingSenderId: "715582818681",
+  appId: "1:715582818681:web:fbe026dadd38ebfeaa07a8",
+  measurementId: "G-M6EDJTHGSK"
 };
 
 // Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-export { db };
+// Inicializa Analytics apenas no navegador
+let analytics = null;
+if (typeof window !== "undefined") {
+  isSupported().then((yes) => {
+    if (yes) analytics = getAnalytics(app);
+  });
+}
 
+export { app, analytics };
