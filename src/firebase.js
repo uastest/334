@@ -1,8 +1,11 @@
 // Importa funções do SDK
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
-// Configuração do Firebase
+// Configuração real do seu projeto Firebase (movu-4e906)
 const firebaseConfig = {
   apiKey: "AIzaSyCdQbnUweA99ag2QQm1rSVUSsvwmQ1S1WI",
   authDomain: "movu-4e906.firebaseapp.com",
@@ -16,12 +19,18 @@ const firebaseConfig = {
 // Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 
-// Inicializa Analytics apenas no navegador
+// Inicializa serviços principais
+const db = getFirestore(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+// Inicializa analytics apenas no navegador (para evitar erro no servidor)
 let analytics = null;
 if (typeof window !== "undefined") {
-  isSupported().then((yes) => {
-    if (yes) analytics = getAnalytics(app);
-  });
+  isSupported().then((supported) => {
+    if (supported) analytics = getAnalytics(app);
+  }).catch(() => {});
 }
 
-export { app, analytics };
+// Exporta tudo para uso no restante do site
+export { app, db, auth, storage, analytics };
