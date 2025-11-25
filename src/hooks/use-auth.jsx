@@ -68,41 +68,28 @@ function useProvideAuth() {
   }, [])
 
   // ✅ REGISTRO: TODO USUÁRIO NASCE PENDENTE
-  const register = async (email, password) => {
+  // Removendo a função register, pois ela não existe no original.
+  // A lógica de registro está no RegisterPage.jsx
 
-    // A criação do usuário no Auth e na coleção 'users' é feita na VerifyPage
-    // O RegisterPage apenas coleta dados e cria o lead no Firestore.
-    // Esta função não deve criar o usuário no Auth.
-    return { email, password } // Retorna credenciais para serem usadas na VerifyPage/RegisterPage.jsx
-
-  }
 
   // ✅ LOGIN: BLOQUEIA ATÉ SER APROVADO
   const login = async (email, password) => {
-
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     const uid = userCredential.user.uid
 
-    const status = await fetchUserStatus(uid)
+    const userRef = doc(db, 'users', uid)
+    const userSnap = await getDoc(userRef)
 
-    // Aceitar verified como aprovado
-    if (status === "verified") {
-      return userCredential.user
-    }
-
-    if (status === "pending") {
+    if (!userSnap.exists()) {
       await signOut(auth)
-      throw new Error("pending_approval")
+      throw new Error("Usuário ainda não foi registrado corretamente.")
     }
 
-    if (status === "rejected") {
-      await signOut(auth)
-      throw new Error("rejected")
-    }
+    const status = userSnap.data().status
 
     if (status !== "approved") {
       await signOut(auth)
-      throw new Error("pending_approval")
+      throw new Error("Cadastro pendente de aprovação.")
     }
 
     return userCredential.user
