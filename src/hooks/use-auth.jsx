@@ -1,78 +1,57 @@
-import { useState, useEffect, useContext, createContext } from 'react'
 import { auth, db } from '../firebase'
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
+  onAuthStateChanged
 } from 'firebase/auth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
+import { useState, useEffect, createContext, useContext } from 'react'
 
-const authContext = createContext()
+const AuthContext = createContext()
 
-// Hook
-export const useAuth = () => {
-  return useContext(authContext)
-}
-
-// Provider
-export function AuthProvider({ children }) {
-  const authValue = useProvideAuth()
-  return <authContext.Provider value={authValue}>{children}</authContext.Provider>
-}
-
-function useProvideAuth() {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [userStatus, setUserStatus] = useState(null)
 
-  // Busca status do usuário no banco
-  const fetchUserStatus = async (uid) => {
-    if (!uid) return null
-
-    try {
-      const userDocRef = doc(db, 'users', uid)
-      const userDoc = await getDoc(userDocRef)
-
-      if (!userDoc.exists()) {
-        setUserStatus('pending')
-        return 'pending'
-      }
-
-      const status = userDoc.data().status || 'pending'
-
-      setUserStatus(status)
-      return status
-
-    } catch (error) {
-      console.error("Erro ao buscar status:", error)
-      setUserStatus('error')
-      return 'error'
-    }
-  }
-
-  // Monitora login automático
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser)
-        await fetchUserStatus(firebaseUser.uid)
-      } else {
+      if (!firebaseUser) {
         setUser(null)
-        setUserStatus(null)
+        setLoading(false)
+        return
       }
+
+      try {
+        const userRef = doc(db, 'users', firebaseUser.uid)
+        const userSnap = await getDoc(userRef)
+
+        if (!userSnap.exists()) {
+          await signOut(auth)
+          setUser(null)
+          setLoading(false)
+          return
+        }
+
+        const data = userSnap.data()
+
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          ...data
+        })
+
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err)
+        await signOut(auth)
+        setUser(null)
+      }
+
       setLoading(false)
     })
 
     return () => unsubscribe()
   }, [])
 
-  // ✅ REGISTRO: TODO USUÁRIO NASCE PENDENTE
-  // Removendo a função register, pois ela não existe no original.
-  // A lógica de registro está no RegisterPage.jsx
-
-
-  // ✅ LOGIN: BLOQUEIA ATÉ SER APROVADO
   const login = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     const uid = userCredential.user.uid
@@ -95,15 +74,18 @@ function useProvideAuth() {
     return userCredential.user
   }
 
-  const logout = () => signOut(auth)
-
-  return {
-    user,
-    userStatus,
-    loading,
-    register,
-    login,
-    logout,
-    fetchUserStatus,
+  const logout = async () => {
+    await signOut(auth)
+    setUser(null)
   }
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export const useAuth = () => {
+  return useContext(AuthContext)
 }
