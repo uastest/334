@@ -137,26 +137,11 @@ export default function VerifyPage({ language }) {
       } else {
         // Verificação de cadastro
         const userDocRef = doc(db, 'leads', userId);
-        // 1. Cria o usuário no Firebase Authentication
-        // Importante: A senha está no objeto 'user' (que é o lead)
-        const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password);
-        const uid = userCredential.user.uid;
-
-        // 2. Cria o documento na coleção 'users' com status 'pending'
-        await setDoc(doc(db, 'users', uid), {
-          email: user.email,
-          status: 'pending', // O status inicial é pending, aguardando aprovação
-          role: 'user',
-          createdAt: new Date().toISOString(),
-        });
-
-        // 3. Atualiza o lead para 'verified' (opcional, mas mantém o histórico)
         await updateDoc(userDocRef, {
-          status: 'verified',
-          verifiedAt: new Date().toISOString(),
+          status: 'pending_approval',
+          phoneVerifiedAt: new Date().toISOString()
         });
 
-        // 4. Redireciona para a página de pendência
         navigate('/cadastro-pendente');
       }
     } catch (e) {
