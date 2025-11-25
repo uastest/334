@@ -69,9 +69,29 @@ export default function RegisterPage({ language }) {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      // A lógica de registro de usuário (email/senha) foi movida para LoginPage.jsx
-      // Esta página agora coleta dados adicionais e cria um 'lead' no Firestore.
-      const docRef = await addDoc(collection(db, 'leads'), {
+      // 1. Cria usuário no Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      )
+
+      const uid = userCredential.user.uid
+
+      // 2. Cria documento em USERS
+      await setDoc(doc(db, 'users', uid), {
+        uid,
+        email: formData.email,
+        fullName: formData.fullName,
+        phone: formData.phone,
+        status: 'pending_approval',
+        role: 'user',
+        createdAt: new Date().toISOString()
+      })
+
+      // 3. Cria LEAD
+      const leadRef = await addDoc(collection(db, 'leads'), {
+        uid,
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
@@ -84,13 +104,12 @@ export default function RegisterPage({ language }) {
         accountHolder: formData.accountHolder || null,
         documentFileName: formData.documentFile?.name || null,
         selfieFileName: formData.selfieFile?.name || null,
-        status: 'pending_verification', // Status de verificação de lead
-        password: formData.password, // Adicionando a senha ao lead
-        createdAt: new Date().toISOString(),
+        status: 'pending_verification',
+        createdAt: new Date().toISOString()
       })
 
-      // Mostrar página de sucesso
-      navigate(`/verify/${docRef.id}`)
+      // 4. Vai pra verificação
+      navigate(`/verify/${leadRef.id}`)
     } catch (error) {
       console.error('Erro ao adicionar documento ao Firebase: ', error)
       alert('Erro ao enviar cadastro. Tente novamente.')
