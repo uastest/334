@@ -27,8 +27,11 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
     setIsSubmitting(true)
 
     try {
-      await login(email, password)
-      navigate('/dashboard')
+      const user = await login(email, password)
+      // Se o login for bem-sucedido, redireciona para o dashboard
+      if (user) {
+        navigate('/dashboard')
+      }
     } catch (err) {
       if (err.message === 'pending_approval') {
         setError(t('pendingApprovalMessage'))
@@ -179,8 +182,10 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
     setIsSubmitting(true)
 
     try {
-      await register(email, password)
-      navigate('/cadastro-pendente')
+      const user = await register(email, password)
+      if (user) {
+        navigate('/cadastro-pendente')
+      }
     } catch (err) {
       setError(t('registrationError') + err.message)
     } finally {
