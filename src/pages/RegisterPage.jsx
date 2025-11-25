@@ -35,6 +35,7 @@ export default function RegisterPage({ language }) {
     accountHolder: '',
     documentFile: null,
     selfieFile: null,
+    password: '',
   })
 
   // Determinar quantas etapas serão necessárias
@@ -84,6 +85,7 @@ export default function RegisterPage({ language }) {
         documentFileName: formData.documentFile?.name || null,
         selfieFileName: formData.selfieFile?.name || null,
         status: 'pending_verification', // Status de verificação de lead
+        password: formData.password, // Adicionando a senha ao lead
         createdAt: new Date().toISOString(),
       })
 
