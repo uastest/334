@@ -73,10 +73,18 @@ function useProvideAuth() {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const uid = userCredential.user.uid
 
+    // 1. Cria o registro inicial do usuário (users)
     await setDoc(doc(db, 'users', uid), {
       email,
-      status: "pending", // 👉 SEU OBJETIVO AQUI
+      status: "pending", // Status inicial: pending
       role: "user",
+      createdAt: new Date().toISOString()
+    })
+
+    // 2. Cria o lead inicial (leads)
+    await setDoc(doc(db, 'leads', uid), {
+      email,
+      status: "pending", // Status inicial: pending
       createdAt: new Date().toISOString()
     })
 
@@ -92,7 +100,7 @@ function useProvideAuth() {
     const status = await fetchUserStatus(uid)
 
     // Aceitar verified como aprovado
-    if (status === "verified") {
+    if (status === "verified" || status === "approved") {
       return userCredential.user
     }
 
@@ -106,10 +114,9 @@ function useProvideAuth() {
       throw new Error("rejected")
     }
 
-    if (status !== "approved") {
-      await signOut(auth)
-      throw new Error("pending_approval")
-    }
+    // Se o status não for aprovado/verificado, bloqueia
+    await signOut(auth)
+    throw new Error("pending_approval")
 
     return userCredential.user
   }
