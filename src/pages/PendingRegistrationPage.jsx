@@ -29,10 +29,10 @@ export default function PendingRegistrationPage() {
               <div className="ml-4">
                 <h3 className="text-xl font-semibold text-blue-800 mb-2">O que acontece agora?</h3>
                 <p className="text-blue-700">
-                  Você será notificado por e-mail assim que sua conta for aprovada e ativada. Isso geralmente leva até **48 horas**.
+                  Você será notificado por whatsapp assim que sua conta for aprovada e ativada. Isso geralmente leva até **24 horas**.
                 </p>
                 <p className="text-blue-700 mt-2">
-                  Por favor, verifique sua caixa de entrada (e a pasta de spam) regularmente.
+                  Por favor, acompanhe pelo WhatsApp. Não envie mensagens, apenas aguarde a confirmação.
                 </p>
               </div>
             </div>
