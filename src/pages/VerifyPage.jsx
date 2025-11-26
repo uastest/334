@@ -11,10 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, TrendingUp, MessageSquare, CheckCircle, Clock, AlertCircle, Phone } from 'lucide-react';
+import { ArrowLeft, TrendingUp, MessageSquare, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { getTranslation } from '../utils/translations';
 
-// Mantendo a funcionalidade de códigos válidos
 const VALID_CODES = [
   '126650', '117154', '116772', '120273', 
   '125019', '120967', '125619', '131811', 
@@ -37,7 +36,6 @@ export default function VerifyPage({ language }) {
 
   const maxAttempts = 5;
 
-  // --- FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
   useEffect(() => {
     const fetchUser = async () => {
       if (!userId) {
@@ -186,138 +184,102 @@ export default function VerifyPage({ language }) {
       setLoading(false);
     }
   };
-  // --- FIM DAS FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Clock className="w-12 h-12 mx-auto mb-4 text-blue-500 animate-spin" />
-          <p className="text-gray-600">Carregando dados do usuário...</p>
+          <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground animate-spin" />
+          <p className="text-muted-foreground">Carregando...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
 
-      {/* Header com design mais limpo e moderno */}
-      <header className="border-b border-gray-200 bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center max-w-4xl">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="bg-blue-600 p-2 rounded-lg">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
               CambioExpress
             </span>
           </Link>
 
-          <Button variant="ghost" onClick={() => navigate(-1)} className="text-gray-600 hover:text-blue-600">
+          <Button variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
           </Button>
         </div>
       </header>
 
-      <section className="container mx-auto px-4 py-16 max-w-4xl">
-        <div className="max-w-lg mx-auto">
+      <section className="container mx-auto px-4 py-12">
+        <div className="max-w-2xl mx-auto">
 
-          <Card className="shadow-2xl border-t-4 border-blue-600">
-            <CardHeader className="text-center pt-8 pb-4">
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mb-4">
-                <Phone className="w-8 h-8 text-blue-600" />
-              </div>
-              <CardTitle className="text-3xl font-extrabold text-gray-900">
-                Verificação de Segurança
-              </CardTitle>
-              <CardDescription className="text-gray-600 mt-2">
-                Precisamos confirmar seu número de telefone para prosseguir com seu cadastro.
+          <div className="text-center mb-8">
+            <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MessageSquare className="w-8 h-8 text-blue-600" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Verificação via WhatsApp
+            </h1>
+            <p className="text-muted-foreground">
+              Enviaremos um código para seu número cadastrado
+            </p>
+          </div>
+
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>Confirme seu número</CardTitle>
+              <CardDescription>
+                Número: <span className="font-medium">{user.phone}</span>
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-8 p-6 sm:p-8">
-              
-              {/* Bloco de Informação do Usuário */}
-              <div className="flex items-center justify-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <Label className="text-lg font-medium text-blue-800">
-                  Número a ser verificado: <span className="font-bold">{user.phone}</span>
-                </Label>
-              </div>
+            <CardContent className="space-y-6">
 
               {!tokenSent ? (
-                // Estado 1: Aguardando envio do código
-                <div className="space-y-4">
-                  <p className="text-center text-gray-700">
-                    Clique no botão abaixo para receber o código de 6 dígitos via WhatsApp.
-                  </p>
-                  <Button 
-                    onClick={sendToken} 
-                    disabled={loading} 
-                    size="lg" 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150"
-                  >
-                    {loading ? 'Enviando Código...' : (
-                      <>
-                        <MessageSquare className="w-5 h-5 mr-2" />
-                        Enviar Código via WhatsApp
-                      </>
-                    )}
+                <div className="text-center space-y-4">
+                  <Button onClick={sendToken} disabled={loading} size="lg" className="w-full">
+                    {loading ? 'Enviando...' : 'Enviar Código via WhatsApp'}
                   </Button>
                 </div>
               ) : (
-                // Estado 2: Código enviado, aguardando verificação
-                <div className="space-y-6">
-                  <p className="text-center text-sm text-green-600 font-medium">
-                    Código enviado! Verifique seu WhatsApp.
-                  </p>
-                  
+                <>
                   <div className="space-y-2">
-                    <Label htmlFor="token" className="text-base font-semibold text-gray-700">
-                      Digite o código de 6 dígitos
-                    </Label>
+                    <Label>Digite o código</Label>
                     <Input
-                      id="token"
                       value={token}
                       onChange={(e) => setToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="text-center text-3xl tracking-[0.5em] font-mono h-14 border-2 focus:border-blue-500 transition"
+                      className="text-center text-2xl tracking-widest"
                       maxLength={6}
-                      placeholder="• • • • • •"
+                      placeholder="000000"
                     />
                   </div>
 
                   {error && (
-                    <Alert variant="destructive" className="border-l-4 border-red-500">
+                    <Alert variant="destructive">
                       <AlertCircle className="w-4 h-4" />
-                      <AlertDescription className="text-sm">{error}</AlertDescription>
+                      <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
 
                   <Button
                     onClick={verifyToken}
                     disabled={loading || token.length !== 6 || attempts >= maxAttempts}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150"
+                    className="w-full"
                   >
                     {loading ? 'Verificando...' : 'Confirmar Código'}
                   </Button>
 
-                  <div className="text-center text-sm text-gray-500">
-                    Tentativas restantes: <span className="font-bold text-gray-700">{maxAttempts - attempts}</span>
+                  <div className="text-center text-sm text-muted-foreground">
+                    Tentativas restantes: {maxAttempts - attempts}
                   </div>
-                  
-                  {/* Opção de Reenvio */}
-                  <div className="text-center pt-4 border-t border-gray-100">
-                    <Button 
-                      variant="link" 
-                      onClick={sendToken} 
-                      disabled={loading} 
-                      className="text-blue-600 hover:text-blue-800 text-sm"
-                    >
-                      Reenviar Código
-                    </Button>
-                  </div>
-                </div>
+                </>
               )}
 
             </CardContent>
