@@ -1,5 +1,3 @@
-
-Footer.jsx
 import { Link } from 'react-router-dom'
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, TrendingUp } from 'lucide-react'
 
