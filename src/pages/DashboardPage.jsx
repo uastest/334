@@ -1,15 +1,18 @@
+
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowRight, TrendingUp, LogOut, User, ArrowLeftRight, DollarSign, Clock, CheckCircle } from 'lucide-react'
+import { ArrowRight, TrendingUp, LogOut, User, ArrowLeftRight, DollarSign, Clock, CheckCircle, Settings, BarChart3 } from 'lucide-react' // Adicionado Settings e BarChart3
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
+import Footer from '../components/Footer'
 
+// Lógica de Backend e Estado (MANTIDA INTACTA)
 const currencies = [
   { code: 'USD', name: 'Dólar Americano', symbol: '$', flag: '🇺🇸' },
   { code: 'EUR', name: 'Euro', symbol: '€', flag: '🇪🇺' },
@@ -33,20 +36,20 @@ export default function DashboardPage({ language }) {
   const [error, setError] = useState(null)
   const [converting, setConverting] = useState(false)
 
-  // Redirecionar se não estiver autenticado
+  // Redirecionar se não estiver autenticado (MANTIDA INTACTA)
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login')
     }
   }, [user, loading, navigate])
 
-  // Validar entrada de valor
+  // Validar entrada de valor (MANTIDA INTACTA)
   const isValidAmount = (val) => {
     const num = parseFloat(val)
     return !isNaN(num) && num > 0 && num <= 999999999
   }
 
-  // Buscar taxa de câmbio
+  // Buscar taxa de câmbio (MANTIDA INTACTA)
   useEffect(() => {
     const fetchExchangeRate = async () => {
       setLoadingRate(true)
@@ -83,7 +86,7 @@ export default function DashboardPage({ language }) {
     fetchExchangeRate()
   }, [fromCurrency, toCurrency])
 
-  // Calcular valor convertido
+  // Calcular valor convertido (MANTIDA INTACTA)
   useEffect(() => {
     const numAmount = parseFloat(amount) || 0
     if (numAmount > 0) {
@@ -93,13 +96,13 @@ export default function DashboardPage({ language }) {
     }
   }, [amount, exchangeRate])
 
-  // Inverter moedas
+  // Inverter moedas (MANTIDA INTACTA)
   const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency)
     setToCurrency(fromCurrency)
   }
 
-  // Criar transação e ir para informações do recebedor
+  // Criar transação e ir para informações do recebedor (MANTIDA INTACTA)
   const handleConvert = async () => {
     if (!isValidAmount(amount)) {
       setError('Por favor, insira um valor válido entre 1 e 999.999.999')
@@ -143,36 +146,45 @@ export default function DashboardPage({ language }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-          <p className="text-muted-foreground">Carregando...</p>
+          <Clock className="w-12 h-12 mx-auto mb-4 text-blue-500 animate-spin" />
+          <p className="text-gray-600">Carregando painel...</p>
         </div>
       </div>
     )
   }
 
+  // --- INÍCIO DO REDESENHO DO JSX ---
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header - Mais profissional e com perfil destacado */}
+      <header className="border-b border-gray-200 bg-white shadow-md sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 max-w-7xl">
           <div className="flex items-center justify-between">
             <Link to="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg">
+              <div className="bg-blue-600 p-2 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold text-gray-900">
                 CambioExpress
               </span>
             </Link>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg">
+              {/* Ícone de Perfil / Configurações */}
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100">
+                <Settings className="w-5 h-5 text-gray-600" />
+              </Button>
+              
+              {/* Perfil do Usuário */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200">
                 <User className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">{user?.email}</span>
+                <span className="text-sm font-medium text-blue-800">{user?.email}</span>
               </div>
-              <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
+              
+              {/* Botão de Sair */}
+              <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2 border-red-400 text-red-600 hover:bg-red-50">
                 <LogOut className="w-4 h-4" />
                 Sair
               </Button>
@@ -182,31 +194,32 @@ export default function DashboardPage({ language }) {
       </header>
 
       {/* Main Content */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Bem-vindo ao Dashboard</h1>
-            <p className="text-muted-foreground">Realize suas conversões de moeda de forma rápida e segura</p>
-          </div>
+      <section className="container mx-auto px-4 py-12 max-w-7xl">
+        <div className="mb-10">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">Bem-vindo, {user?.email.split('@')[0]}!</h1>
+          <p className="text-lg text-gray-600">Seu painel de controle para conversões de moeda rápidas e seguras.</p>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Converter Card */}
-            <Card className="shadow-lg border-0">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-2xl">Conversor de Moedas</CardTitle>
-                <CardDescription>Taxa de câmbio atualizada em tempo real</CardDescription>
+        <div className="grid lg:grid-cols-3 gap-8">
+          
+          {/* Coluna 1: Conversor de Moedas (Destaque) */}
+          <div className="lg:col-span-2">
+            <Card className="shadow-2xl border-t-4 border-blue-600">
+              <CardHeader className="pb-4 bg-gray-50 border-b border-gray-200">
+                <CardTitle className="text-2xl font-bold text-gray-900">Conversor de Moedas</CardTitle>
+                <CardDescription className="text-gray-600">Inicie uma nova transação com a melhor taxa do dia.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6 p-6">
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
+                  <div className="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg text-sm font-medium">
                     {error}
                   </div>
                 )}
 
                 {/* From Currency */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Você envia</label>
-                  <div className="flex gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Você envia</label>
+                  <div className="flex gap-3">
                     <Input
                       type="number"
                       value={amount}
@@ -214,14 +227,14 @@ export default function DashboardPage({ language }) {
                         setAmount(e.target.value)
                         setError(null)
                       }}
-                      className="flex-1 text-lg"
+                      className="flex-1 text-xl p-3 border-gray-300 focus:border-blue-500"
                       placeholder="1000"
                       min="0"
                       max="999999999"
                       step="0.01"
                     />
                     <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger className="w-[140px]">
+                      <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -235,31 +248,35 @@ export default function DashboardPage({ language }) {
                   </div>
                 </div>
 
-                {/* Swap Button */}
-                <div className="flex justify-center">
-                  <Button
-                    variant="outline"
-                    size="sm"
+                {/* Swap Button e Taxa */}
+                <div className="flex items-center justify-between">
+                  <button
                     onClick={handleSwapCurrencies}
-                    className="rounded-full w-10 h-10 p-0"
+                    className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors border border-gray-300"
+                    title="Inverter moedas"
                   >
-                    <ArrowLeftRight className="w-4 h-4" />
-                  </Button>
+                    <ArrowLeftRight className="w-5 h-5 text-blue-600" />
+                  </button>
+                  
+                  {/* Exchange Rate Display - Mais proeminente */}
+                  <div className="text-sm text-gray-600 font-medium">
+                    Taxa: <span className="text-blue-600 font-bold">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</span>
+                    <span className="ml-4 text-green-600 font-bold">Taxa de Serviço: 0.4%</span>
+                  </div>
                 </div>
 
-                {/* To Currency */}
+                {/* To Currency - Destaque no Recebimento */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Você recebe</label>
-                  <div className="flex gap-2">
+                  <label className="text-sm font-semibold text-gray-700">Você recebe</label>
+                  <div className="flex gap-3">
                     <Input
                       type="text"
-                      value={convertedAmount}
+                      value={loadingRate ? 'Calculando...' : convertedAmount}
                       readOnly
-                      className="flex-1 text-lg bg-gray-50"
-                      placeholder="0.00"
+                      className="flex-1 text-2xl p-3 font-extrabold bg-green-50 border-green-300 text-green-800"
                     />
                     <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger className="w-[140px]">
+                      <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -270,95 +287,77 @@ export default function DashboardPage({ language }) {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-                </div>
-
-                {/* Exchange Rate Info */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-blue-700 font-medium">Taxa de câmbio:</span>
-                    <span className="text-blue-900 font-semibold">
-                      1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
-                    </span>
                   </div>
                 </div>
 
                 <Button
                   onClick={handleConvert}
                   disabled={converting || loadingRate || !isValidAmount(amount)}
-                  className="w-full gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-md shadow-blue-500/50"
+                  size="lg"
                 >
-                  <ArrowRight className="w-4 h-4" />
-                  {converting ? 'Processando...' : 'Converter Agora'}
+                  {converting ? 'Processando Transação...' : 'Converter e Continuar'}
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </CardContent>
             </Card>
+          </div>
 
-            {/* Info Card */}
-            <div className="space-y-4">
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle className="text-lg">Por que escolher a CambioExpress?</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-sm">Taxas Competitivas</p>
-                      <p className="text-xs text-muted-foreground">Melhores taxas de câmbio do mercado</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-sm">Segurança Garantida</p>
-                      <p className="text-xs text-muted-foreground">Todas as transações são criptografadas</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-sm">Processamento Rápido</p>
-                      <p className="text-xs text-muted-foreground">Transferências em poucas horas</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-sm">Suporte 24/7</p>
-                      <p className="text-xs text-muted-foreground">Equipe sempre disponível para ajudar</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Coluna 2: Informações e Status */}
+          <div className="lg:col-span-1 space-y-8">
+            
+            {/* Card de Status/Estatísticas (Novo) */}
+            <Card className="shadow-lg border-t-4 border-purple-600">
+              <CardHeader>
+                <BarChart3 className="w-6 h-6 text-purple-600 mb-2" />
+                <CardTitle className="text-xl font-bold">Minhas Estatísticas</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center border-b pb-2">
+                  <span className="text-gray-600">Transações Concluídas:</span>
+                  <span className="font-bold text-lg text-gray-900">12</span> {/* Dados simulados */}
+                </div>
+                <div className="flex justify-between items-center border-b pb-2">
+                  <span className="text-gray-600">Total Enviado (USD):</span>
+                  <span className="font-bold text-lg text-green-600">$ 15,450.00</span> {/* Dados simulados */}
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Última Transação:</span>
+                  <span className="font-medium text-sm text-gray-900">2 dias atrás</span> {/* Dados simulados */}
+                </div>
+              </CardContent>
+            </Card>
 
-              <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-blue-100">
-                <CardHeader>
-                  <CardTitle className="text-lg text-blue-900">Próximas Etapas</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm text-blue-900">
-                  <div className="flex gap-2">
-                    <span className="font-bold bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</span>
-                    <p>Insira o valor e escolha as moedas</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="font-bold bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</span>
-                    <p>Informe os dados do recebedor</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="font-bold bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</span>
-                    <p>Verifique seu WhatsApp</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="font-bold bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">4</span>
-                    <p>Escolha o método de pagamento</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Card de Próximas Etapas (Aprimorado) */}
+            <Card className="shadow-lg border-t-4 border-green-600 bg-green-50">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-green-800">Próximas Etapas da Transação</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-green-800">
+                <div className="flex gap-3 items-start">
+                  <span className="font-bold bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</span>
+                  <p>Insira o valor e escolha as moedas</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="font-bold bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</span>
+                  <p>Informe os dados do recebedor</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="font-bold bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</span>
+                  <p>Verifique seu WhatsApp</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="font-bold bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">4</span>
+                  <p>Escolha o método de pagamento</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
+      
+      {/* Footer (Reutilizando o componente redesenhado) */}
+      <Footer />
     </div>
   )
 }
