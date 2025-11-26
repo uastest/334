@@ -1,5 +1,4 @@
 
-HomePage.jsx
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
