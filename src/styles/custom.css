@@ -131,9 +131,15 @@
 }
 
 /* Badges personalizadas */
-.badge-success {
-  @apply bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium;
+.badge-green {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
+
 
 .badge-warning {
   @apply bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium;
