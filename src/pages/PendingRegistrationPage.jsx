@@ -8,7 +8,7 @@ export default function PendingRegistrationPage() {
         <div className="p-8 sm:p-10 lg:p-12 text-center">
           
           {/* Icone de Status - Mais moderno e com foco na espera */}
-          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-yellow-100 mb-6">
+          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full badge-yellow mb-6">
             <Clock className="h-10 w-10 text-yellow-600 animate-spin-slow" />
           </div>
 
