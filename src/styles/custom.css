@@ -153,12 +153,27 @@
 }
 
 
-.badge-error {
-  @apply bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium;
+.badge-red {
+  background-color: #fee2e2;  /* equivalente ao bg-red-100 */
+  color: #991b1b;             /* equivalente ao text-red-800 */
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
 }
 
-.badge-info {
-  @apply bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium;
+/* Badge Azul */
+.badge-blue {
+  background-color: #dbeafe;  /* equivalente ao bg-blue-100 */
+  color: #1e40af;             /* equivalente ao text-blue-800 */
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Containers com background gradient */
