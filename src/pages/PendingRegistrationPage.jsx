@@ -1,3 +1,5 @@
+
+Home.tsx
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
@@ -48,7 +50,7 @@ export default function Home() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 50 } as any,
+      transition: { duration: 0.5 },
     },
   };
 
