@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard, Banknote } from 'lucide-react'
+import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard, Banknote, Info } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
@@ -50,6 +50,11 @@ export default function ReceiverInfoPage({ language }) {
             return
           }
           setTransaction({ id: docSnap.id, ...data })
+          // Preencher o nome completo do recebedor com o nome do usuário logado (titular da conta)
+          setFormData(prev => ({
+            ...prev,
+            receiverFullName: user.displayName || ''
+          }))
         } else {
           navigate('/dashboard')
         }
@@ -100,6 +105,12 @@ export default function ReceiverInfoPage({ language }) {
       return false
     }
 
+    // Validação de titularidade (nome do recebedor deve ser o mesmo do usuário logado)
+    if (user.displayName && formData.receiverFullName.trim().toLowerCase() !== user.displayName.trim().toLowerCase()) {
+      setError('A conta de recebimento deve estar OBRIGATORIAMENTE no mesmo nome do seu cadastro: ' + user.displayName)
+      return false
+    }
+
     return true
   }
 
@@ -126,7 +137,7 @@ export default function ReceiverInfoPage({ language }) {
           accountType: formData.accountType,
           accountNumber: formData.accountNumber,
           routingNumber: formData.routingNumber,
-          // Campos removidos: bankCountry, swiftCode, iban
+          // Campos internacionais removidos
         },
         status: 'pending_whatsapp_verification',
         updatedAt: new Date().toISOString(),
@@ -142,6 +153,9 @@ export default function ReceiverInfoPage({ language }) {
     }
   }
 
+  // --- Renderização ---
+
+  // Componente de Loading Aprimorado (para evitar tela branca)
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center">
@@ -156,6 +170,7 @@ export default function ReceiverInfoPage({ language }) {
     )
   }
 
+  // Componente de Erro (para evitar tela branca)
   if (!transaction) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center">
@@ -203,9 +218,18 @@ export default function ReceiverInfoPage({ language }) {
           {/* Page Title */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold mb-3 text-slate-800">
-              Dados para Transferência
+              Dados para Recebimento Internacional
             </h1>
-            <p className="text-slate-600 text-lg">Preencha as informações do beneficiário para concluir a transação.</p>
+            <p className="text-slate-600 text-lg">Preencha as informações da sua conta bancária para receber o valor da transação de câmbio.</p>
+          </div>
+
+          {/* Titularity Warning */}
+          <div className="bg-yellow-50 border-2 border-yellow-300 text-yellow-800 px-4 py-3 rounded-xl text-base flex gap-3 items-start shadow-sm mb-8">
+            <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-yellow-600" />
+            <span className="font-medium">
+              **ATENÇÃO:** A conta de recebimento deve estar **OBRIGATORIAMENTE** no mesmo nome do seu cadastro na nossa casa de câmbio.
+              Seu nome de cadastro é: **{user.displayName || 'Não Informado'}**.
+            </span>
           </div>
 
           {/* Transaction Summary Card */}
@@ -219,7 +243,7 @@ export default function ReceiverInfoPage({ language }) {
                   </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-blue-100 text-sm mb-1 font-medium">Beneficiário Recebe</p>
+                  <p className="text-blue-100 text-sm mb-1 font-medium">Você Recebe</p>
                   <p className="text-2xl md:text-3xl font-bold">
                     {transaction.convertedAmount} {transaction.toCurrency}
                   </p>
@@ -233,9 +257,9 @@ export default function ReceiverInfoPage({ language }) {
             <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 border-b-2 border-slate-100 rounded-t-xl">
               <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-800">
                 <Banknote className="w-7 h-7 text-blue-600" />
-                Informações do Beneficiário e Conta
+                Informações da Sua Conta Bancária
               </CardTitle>
-              <CardDescription className="text-base text-slate-600">Todos os campos são obrigatórios para a transferência nacional.</CardDescription>
+              <CardDescription className="text-base text-slate-600">Preencha todos os campos obrigatórios para o recebimento da transferência.</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -246,23 +270,23 @@ export default function ReceiverInfoPage({ language }) {
                   </div>
                 )}
 
-                {/* Beneficiary Info Section */}
+                {/* Beneficiary Info Section (Now User's Info) */}
                 <div className="space-y-5 pb-6 border-b-2 border-slate-200">
                   <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
                     <User className="w-5 h-5 text-blue-600" />
-                    Dados Pessoais do Beneficiário
+                    Dados Pessoais do Titular (Você)
                   </h3>
 
                   <div>
                     <Label htmlFor="receiverFullName" className="text-base font-semibold text-slate-700">
-                      Nome Completo *
+                      Nome Completo do Titular *
                     </Label>
                     <div className="relative mt-2">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <Input
                         id="receiverFullName"
                         type="text"
-                        placeholder="Nome completo conforme documento"
+                        placeholder="Seu nome completo conforme cadastro"
                         value={formData.receiverFullName}
                         onChange={(e) => handleInputChange('receiverFullName', e.target.value)}
                         className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2"
@@ -280,7 +304,7 @@ export default function ReceiverInfoPage({ language }) {
                       <Input
                         id="receiverEmail"
                         type="email"
-                        placeholder="exemplo@email.com"
+                        placeholder="Seu e-mail de contato"
                         value={formData.receiverEmail}
                         onChange={(e) => handleInputChange('receiverEmail', e.target.value)}
                         className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2"
@@ -312,7 +336,7 @@ export default function ReceiverInfoPage({ language }) {
                 <div className="space-y-5">
                   <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
                     <Building2 className="w-5 h-5 text-green-600" />
-                    Dados Bancários para Transferência
+                    Dados Bancários para Recebimento
                   </h3>
 
                   <div>
@@ -412,8 +436,8 @@ export default function ReceiverInfoPage({ language }) {
 
           {/* Security Notice */}
           <div className="mt-8 text-center text-sm text-slate-600 bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-inner">
-            <p className="font-bold text-blue-800 mb-1">🔒 Segurança em Primeiro Lugar</p>
-            <p>Todas as informações são criptografadas e utilizadas exclusivamente para a realização desta transferência bancária.</p>
+            <p className="font-bold text-blue-800 mb-1">🔒 Segurança e Conformidade</p>
+            <p>Todas as informações são tratadas com a máxima segurança e utilizadas apenas para o processamento da sua ordem de câmbio.</p>
           </div>
         </div>
       </section>
