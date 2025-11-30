@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ArrowRight, TrendingUp, Mail, Lock, Eye, EyeOff, LogIn, UserPlus } from 'lucide-react'
+import { ArrowRight, TrendingUp, Mail, Lock, Eye, EyeOff, LogIn, UserPlus, ArrowLeft } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
-import { cn } from '@/lib/utils'
 import { useAuth } from '../hooks/use-auth'
 
 // ===============================
@@ -61,9 +60,9 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-bold text-gray-700">{t('email')}</Label>
+        <Label htmlFor="email" className="text-sm font-bold text-gray-800">{t('email')}</Label>
         <div className="relative" id="email-input">
           <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
@@ -79,7 +78,7 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-bold text-gray-700">{t('password')}</Label>
+        <Label htmlFor="password" className="text-sm font-bold text-gray-800">{t('password')}</Label>
         <div className="relative" id="password-input">
           <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
@@ -101,20 +100,20 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-2">
         <div className="flex items-center space-x-2">
           <Checkbox id="remember-me" className="border-2 border-gray-300" />
           <Label htmlFor="remember-me" className="text-sm font-medium text-gray-700 cursor-pointer">
             {t('rememberMe')}
           </Label>
         </div>
-        <Link to="/forgot-password" className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+        <Link to="/contact" className="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
           {t('forgotPassword')}
         </Link>
       </div>
 
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-4 rounded-lg text-sm font-medium">
+        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg text-sm font-medium">
           {error}
         </div>
       )}
@@ -122,13 +121,13 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
       <Button 
         type="submit" 
         disabled={isSubmitting}
-        className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-bold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 gap-2 uppercase tracking-wider border-0"
+        className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-bold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 gap-2 uppercase tracking-wider border-0 text-base"
       >
         <LogIn className="w-5 h-5" />
         {isSubmitting ? t('loggingIn') : t('login')}
       </Button>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-gray-700 pt-2">
         {t('noAccount')}
         <button
           type="button"
@@ -161,8 +160,8 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
     try {
       const user = await register(email, password)
       if (user) {
-        // Redireciona para RegisterPage
-        navigate('/register')
+        // Redireciona para RegisterPage com dados
+        navigate('/register', { state: { email, password } })
       }
     } catch (err) {
       setError(t('registrationError') + err.message)
@@ -172,9 +171,9 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="reg-email" className="text-sm font-bold text-gray-700">{t('email')}</Label>
+        <Label htmlFor="reg-email" className="text-sm font-bold text-gray-800">{t('email')}</Label>
         <div className="relative">
           <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
@@ -190,7 +189,7 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="reg-password" className="text-sm font-bold text-gray-700">{t('password')}</Label>
+        <Label htmlFor="reg-password" className="text-sm font-bold text-gray-800">{t('password')}</Label>
         <div className="relative">
           <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
@@ -213,7 +212,7 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
       </div>
 
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-4 rounded-lg text-sm font-medium">
+        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg text-sm font-medium">
           {error}
         </div>
       )}
@@ -221,13 +220,13 @@ const RegisterForm = ({ t, navigate, toggleForm }) => {
       <Button 
         type="submit" 
         disabled={isSubmitting}
-        className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-bold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 gap-2 uppercase tracking-wider border-0"
+        className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-bold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 gap-2 uppercase tracking-wider border-0 text-base"
       >
         <UserPlus className="w-5 h-5" />
         {isSubmitting ? t('registering') : t('createAccount')}
       </Button>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-gray-700 pt-2">
         {t('alreadyHaveAccount')}
         <button
           type="button"
@@ -250,7 +249,7 @@ export default function LoginPage({ language }) {
   const [isLoginView, setIsLoginView] = useState(true)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 p-4">
       <style>
         {`
           .form-enter {
@@ -274,58 +273,55 @@ export default function LoginPage({ language }) {
         `}
       </style>
 
-      <div className="w-full max-w-5xl bg-white shadow-2xl rounded-2xl overflow-hidden grid md:grid-cols-2">
-        {/* LEFT SIDE - MARKETING */}
-        <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          </div>
+      <div className="w-full max-w-md">
+        <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
+          {/* HEADER */}
+          <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 p-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl" />
+            </div>
 
-          <div className="relative z-10">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-12">
-              <div className="bg-white p-2 rounded-lg shadow-lg">
-                <TrendingUp className="w-7 h-7 text-blue-600 font-bold" />
-              </div>
-              <span className="text-3xl font-black">CambioExpress</span>
-            </Link>
-          </div>
+            <div className="relative z-10">
+              <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity mb-6">
+                <div className="bg-white p-2 rounded-lg shadow-lg">
+                  <TrendingUp className="w-6 h-6 text-blue-600 font-bold" />
+                </div>
+                <span className="text-2xl font-black">CambioExpress</span>
+              </Link>
 
-          <div className="relative z-10">
-            <h2 className="text-4xl font-black leading-tight mb-4">
-              {t('loginMarketingTitle')}
-            </h2>
-            <p className="text-blue-100 text-lg font-semibold">
-              {t('loginMarketingSubtitle')}
-            </p>
-          </div>
-
-          <div className="relative z-10 text-sm text-blue-200 font-medium">
-            &copy; {new Date().getFullYear()} CambioExpress. Todos os direitos reservados.
-          </div>
-        </div>
-
-        {/* RIGHT SIDE - FORM */}
-        <div className={cn("p-10 md:p-12 form-enter", isLoginView && 'form-enter-active')}>
-          <Card className="border-none shadow-none">
-            <CardHeader className="text-center p-0 mb-8">
-              <CardTitle className="text-4xl font-black text-gray-900">
+              <h1 className="text-3xl font-black mb-2">
                 {isLoginView ? t('welcomeBack') : t('createAccount')}
-              </CardTitle>
-              <CardDescription className="text-gray-600 text-base font-medium mt-2">
+              </h1>
+              <p className="text-blue-100 font-semibold">
                 {isLoginView ? t('loginToContinue') : t('registerToStart')}
-              </CardDescription>
-            </CardHeader>
+              </p>
+            </div>
+          </div>
 
-            <CardContent className="p-0">
+          {/* FORM */}
+          <div className="p-8">
+            <div className={`form-enter ${isLoginView && 'form-enter-active'}`}>
               {isLoginView ? (
                 <LoginForm t={t} navigate={navigate} toggleForm={() => setIsLoginView(false)} />
               ) : (
                 <RegisterForm t={t} navigate={navigate} toggleForm={() => setIsLoginView(true)} />
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
+
+          {/* FOOTER */}
+          <div className="bg-gray-50 px-8 py-6 border-t border-gray-200 text-center text-sm text-gray-600">
+            &copy; {new Date().getFullYear()} CambioExpress. Todos os direitos reservados.
+          </div>
+        </div>
+
+        {/* Back to Home */}
+        <div className="text-center mt-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600 font-semibold transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Voltar para Home
+          </Link>
         </div>
       </div>
     </div>
