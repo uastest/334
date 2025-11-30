@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -34,6 +34,9 @@ export default function ReceiverInfoPage({ language }) {
     // Dados de Pagamento (Simplificado)
     paymentMethod: 'pix', // pix ou credit_card
   })
+
+  // Gerar uma chave única para o Select
+  const selectKey = useMemo(() => Math.random().toString(36).substring(2, 9), [formData.accountType])
 
   // Buscar transação
   useEffect(() => {
@@ -378,11 +381,15 @@ export default function ReceiverInfoPage({ language }) {
                       <Label htmlFor="accountType" className="text-base font-semibold text-slate-700">
                         Tipo de Conta *
                       </Label>
-                      <Select value={formData.accountType} onValueChange={(value) => handleInputChange('accountType', value)}>
+                      <Select 
+                        key={selectKey} // 👈 CORREÇÃO FINAL: Chave única para forçar a remontagem
+                        value={formData.accountType} 
+                        onValueChange={(value) => handleInputChange('accountType', value)}
+                      >
                         <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2 bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent position="popper" className="bg-white border-2 border-slate-200 shadow-xl">
+                        <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
                           <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
                             Conta Corrente
                           </SelectItem>
