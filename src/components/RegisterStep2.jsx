@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useLayoutEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select' // Removido por causar instabilidade
 import { AlertCircle } from 'lucide-react'
 
 const countries = [
@@ -19,6 +19,11 @@ const countries = [
 
 export default function RegisterStep2({ formData, onDataChange, onNext, onPrevious, loading }) {
   const [errors, setErrors] = useState({})
+
+  // Correção de Scroll: Garante que o scroll vá para o topo na montagem
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const validateStep = () => {
     const newErrors = {}
@@ -80,26 +85,24 @@ export default function RegisterStep2({ formData, onDataChange, onNext, onPrevio
             )}
           </div>
 
-          {/* Nacionalidade */}
+          {/* Nacionalidade - SUBSTITUÍDO POR SELECT NATIVO */}
           <div className="space-y-2">
             <Label htmlFor="nationality" className="font-medium">
               Nacionalidade *
             </Label>
-            <Select
+            <select
+              id="nationality"
               value={formData.nationality || ''}
-              onValueChange={(value) => onDataChange('nationality', value)}
+              onChange={(e) => onDataChange('nationality', e.target.value)}
+              className={`w-full text-base border border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:ring-blue-500 bg-white shadow-sm ${errors.nationality ? 'border-red-500' : ''}`}
             >
-              <SelectTrigger className={`${errors.nationality ? 'border-red-500' : ''}`}>
-                <SelectValue placeholder="Selecione sua nacionalidade" />
-              </SelectTrigger>
-              <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country} value={country}>
-                    {country}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <option value="" disabled>Selecione sua nacionalidade</option>
+              {countries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
             {errors.nationality && (
               <p className="text-sm text-red-500 flex items-center gap-1">
                 <AlertCircle className="w-4 h-4" />
