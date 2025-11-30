@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowRight, TrendingUp, LogOut, User, ArrowLeftRight, DollarSign, Clock, CheckCircle, Settings, BarChart3 } from 'lucide-react' // Adicionado Settings e BarChart3
+import { ArrowRight, TrendingUp, LogOut, User, ArrowLeftRight, DollarSign, Clock, CheckCircle, BarChart3 } from 'lucide-react' // Adicionado Settings e BarChart3
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
@@ -43,7 +43,7 @@ export default function DashboardPage({ language }) {
   }, [user, loading, navigate])
 
   // Correção de Scroll Local: Força o scroll para o topo na montagem do componente
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -176,10 +176,7 @@ export default function DashboardPage({ language }) {
             </Link>
 
             <div className="flex items-center gap-4">
-              {/* Ícone de Perfil / Configurações */}
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100">
-                <Settings className="w-5 h-5 text-gray-600" />
-              </Button>
+
               
               {/* Perfil do Usuário */}
               <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200">
@@ -241,7 +238,7 @@ export default function DashboardPage({ language }) {
                       <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent position="popper">
+                      <SelectContent position="popper" className="bg-white">
                         {currencies.map((curr) => (
                           <SelectItem key={curr.code} value={curr.code}>
                             {curr.flag} {curr.code}
@@ -283,7 +280,7 @@ export default function DashboardPage({ language }) {
                       <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent position="popper">
+                      <SelectContent position="popper" className="bg-white">
                         {currencies.map((curr) => (
                           <SelectItem key={curr.code} value={curr.code}>
                             {curr.flag} {curr.code}
