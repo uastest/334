@@ -1,3 +1,4 @@
+// Conteúdo final de VerifyPage.jsx
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { db } from '../firebase';
 import { 
@@ -6,11 +7,8 @@ import {
 } from 'firebase/firestore';
 
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button'; // Mantido, mas não usado na UI
-import { Input } from '@/components/ui/input'; // Mantido, mas não usado na UI
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, TrendingUp, MessageSquare, CheckCircle, Clock, AlertCircle, Phone } from 'lucide-react'; // Adicionado Phone
 import { getTranslation } from '../utils/translations';
 
@@ -78,7 +76,6 @@ export default function VerifyPage({ language }) {
     setLoading(true);
     setError('');
 
-    // ADIÇÃO DE ROBUSTEZ: Verifica se o usuário está carregado antes de prosseguir
     if (!user) {
       setError("Dados do usuário não carregados. Tente novamente.");
       setLoading(false);
@@ -225,7 +222,6 @@ export default function VerifyPage({ language }) {
             </span>
           </Link>
 
-          {/* SUBSTITUÍDO: Button por <button> nativo */}
           <button type="button" onClick={() => navigate(-1)} className="text-gray-600 hover:text-blue-600 p-2 rounded-md transition duration-150 flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
@@ -264,7 +260,6 @@ export default function VerifyPage({ language }) {
                   <p className="text-center text-gray-700">
                     Clique no botão abaixo para receber o código de 6 dígitos via WhatsApp.
                   </p>
-                  {/* SUBSTITUÍDO: Button por <button> nativo */}
                   <button 
                     onClick={sendToken} 
                     disabled={loading} 
@@ -290,7 +285,6 @@ export default function VerifyPage({ language }) {
                     <Label htmlFor="token" className="text-base font-semibold text-gray-700">
                       Digite o código de 6 dígitos
                     </Label>
-                    {/* SUBSTITUÍDO: Input por <input> nativo */}
                     <input
                       id="token"
                       type="text"
@@ -304,13 +298,12 @@ export default function VerifyPage({ language }) {
                   </div>
 
                   {error && (
-                    <Alert variant="destructive" className="border-l-4 border-red-500">
-                      <AlertCircle className="w-4 h-4" />
-                      <AlertDescription className="text-sm">{error}</AlertDescription>
-                    </Alert>
+                    <div className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-md flex items-start space-x-3">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm">{error}</p>
+                    </div>
                   )}
 
-                  {/* SUBSTITUÍDO: Button por <button> nativo */}
                   <button
                     onClick={verifyToken}
                     disabled={loading || token.length !== 6 || attempts >= maxAttempts}
@@ -326,7 +319,6 @@ export default function VerifyPage({ language }) {
                   
                   {/* Opção de Reenviar Código (adicionada no redesenho) */}
                   <div className="text-center pt-4 border-t border-gray-100">
-                    {/* SUBSTITUÍDO: Button por <button> nativo */}
                     <button 
                       onClick={sendToken} 
                       disabled={loading} 
