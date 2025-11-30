@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { db } from '../firebase';
 import { 
   doc, getDoc, updateDoc, collection, 
@@ -33,8 +33,14 @@ export default function VerifyPage({ language }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [attempts, setAttempts] = useState(0);
+  const [dataLoading, setDataLoading] = useState(true); // Novo estado de carregamento de dados
 
   const maxAttempts = 5;
+
+  // Correção de Scroll: Garante que o scroll vá para o topo na montagem
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // --- FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
   useEffect(() => {
@@ -64,6 +70,7 @@ export default function VerifyPage({ language }) {
       } else {
         navigate('/register');
       }
+      setDataLoading(false); // Marca o fim do carregamento de dados
     };
 
     fetchUser();
@@ -187,7 +194,7 @@ export default function VerifyPage({ language }) {
   };
   // --- FIM DAS FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
 
-  if (!user) {
+  if (dataLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
