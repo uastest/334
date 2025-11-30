@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowLeft, TrendingUp, Clock, AlertCircle } from 'lucide-react'
+import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
@@ -27,7 +27,7 @@ export default function ReceiverInfoPage({ language }) {
     receiverPhone: '',
     bankName: '',
     bankCountry: '',
-    accountType: 'checking', // checking ou savings
+    accountType: 'checking',
     accountNumber: '',
     routingNumber: '',
     swiftCode: '',
@@ -155,10 +155,13 @@ export default function ReceiverInfoPage({ language }) {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
-          <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-          <p className="text-muted-foreground">Carregando...</p>
+          <div className="relative">
+            <Clock className="w-16 h-16 mx-auto mb-4 text-blue-600 animate-spin" />
+            <div className="absolute inset-0 bg-blue-400 blur-xl opacity-20 animate-pulse"></div>
+          </div>
+          <p className="text-slate-700 font-medium text-lg">Carregando informações...</p>
         </div>
       </div>
     )
@@ -166,30 +169,38 @@ export default function ReceiverInfoPage({ language }) {
 
   if (!transaction) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-600" />
-          <p className="text-red-600 font-medium">Transação não encontrada</p>
+          <AlertCircle className="w-16 h-16 mx-auto mb-4 text-red-600" />
+          <p className="text-red-600 font-semibold text-lg">Transação não encontrada</p>
+          <Button onClick={() => navigate('/dashboard')} className="mt-4 bg-blue-600 hover:bg-blue-700">
+            Voltar ao Dashboard
+          </Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg">
+              <div className="bg-gradient-to-br from-blue-600 to-green-600 p-2 rounded-xl shadow-lg">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                 CambioExpress
               </span>
             </Link>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')} className="gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => navigate('/dashboard')} 
+              className="gap-2 border-slate-300 hover:bg-slate-100"
+            >
               <ArrowLeft className="w-4 h-4" />
               Voltar
             </Button>
@@ -198,26 +209,29 @@ export default function ReceiverInfoPage({ language }) {
       </header>
 
       {/* Main Content */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Informações do Recebedor</h1>
-            <p className="text-muted-foreground">Insira os dados da conta que receberá o dinheiro</p>
+      <section className="container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-3xl mx-auto">
+          {/* Page Title */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              Informações do Recebedor
+            </h1>
+            <p className="text-slate-600 text-lg">Insira os dados da conta que receberá o dinheiro</p>
           </div>
 
-          {/* Transaction Summary */}
-          <Card className="shadow-lg mb-6 bg-blue-50 border-blue-200">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Você envia</p>
-                  <p className="text-xl font-bold text-blue-900">
+          {/* Transaction Summary Card */}
+          <Card className="shadow-xl mb-8 border-0 bg-gradient-to-br from-blue-600 to-green-600 text-white overflow-hidden">
+            <CardContent className="pt-6 pb-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <p className="text-blue-100 text-sm mb-1 font-medium">Você envia</p>
+                  <p className="text-2xl md:text-3xl font-bold">
                     {transaction.amount} {transaction.fromCurrency}
                   </p>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Você recebe</p>
-                  <p className="text-xl font-bold text-blue-900">
+                <div className="text-center">
+                  <p className="text-blue-100 text-sm mb-1 font-medium">Recebedor recebe</p>
+                  <p className="text-2xl md:text-3xl font-bold">
                     {transaction.convertedAmount} {transaction.toCurrency}
                   </p>
                 </div>
@@ -225,150 +239,207 @@ export default function ReceiverInfoPage({ language }) {
             </CardContent>
           </Card>
 
-          {/* Form */}
-          <Card className="shadow-lg border-0">
-            <CardHeader>
-              <CardTitle>Dados do Recebedor e Conta Bancária</CardTitle>
-              <CardDescription>Todos os campos são obrigatórios</CardDescription>
+          {/* Form Card */}
+          <Card className="shadow-xl border-0 bg-white">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 border-b">
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <Building2 className="w-6 h-6 text-blue-600" />
+                Dados do Recebedor e Conta Bancária
+              </CardTitle>
+              <CardDescription className="text-base">Preencha todos os campos obrigatórios com atenção</CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <CardContent className="pt-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm flex gap-2">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                    {error}
+                  <div className="bg-red-50 border-2 border-red-300 text-red-800 px-4 py-3 rounded-xl text-sm flex gap-3 items-start shadow-sm">
+                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <span className="font-medium">{error}</span>
                   </div>
                 )}
 
                 {/* Receiver Info Section */}
-                <div className="space-y-4 pb-6 border-b">
-                  <h3 className="font-semibold text-lg">Dados do Recebedor</h3>
+                <div className="space-y-5 pb-6 border-b-2 border-slate-200">
+                  <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
+                    <User className="w-5 h-5 text-blue-600" />
+                    Dados do Recebedor
+                  </h3>
 
                   <div>
-                    <Label htmlFor="receiverFullName">Nome Completo *</Label>
-                    <Input
-                      id="receiverFullName"
-                      type="text"
-                      placeholder="João Silva Santos"
-                      value={formData.receiverFullName}
-                      onChange={(e) => handleInputChange('receiverFullName', e.target.value)}
-                      className="mt-2"
-                      required
-                    />
+                    <Label htmlFor="receiverFullName" className="text-base font-semibold text-slate-700">
+                      Nome Completo *
+                    </Label>
+                    <div className="relative mt-2">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        id="receiverFullName"
+                        type="text"
+                        placeholder="João Silva Santos"
+                        value={formData.receiverFullName}
+                        onChange={(e) => handleInputChange('receiverFullName', e.target.value)}
+                        className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="receiverEmail">Email *</Label>
-                    <Input
-                      id="receiverEmail"
-                      type="email"
-                      placeholder="joao@exemplo.com"
-                      value={formData.receiverEmail}
-                      onChange={(e) => handleInputChange('receiverEmail', e.target.value)}
-                      className="mt-2"
-                      required
-                    />
+                    <Label htmlFor="receiverEmail" className="text-base font-semibold text-slate-700">
+                      Email *
+                    </Label>
+                    <div className="relative mt-2">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        id="receiverEmail"
+                        type="email"
+                        placeholder="joao@exemplo.com"
+                        value={formData.receiverEmail}
+                        onChange={(e) => handleInputChange('receiverEmail', e.target.value)}
+                        className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="receiverPhone">Telefone/WhatsApp *</Label>
-                    <Input
-                      id="receiverPhone"
-                      type="tel"
-                      placeholder="+55 11 99999-9999"
-                      value={formData.receiverPhone}
-                      onChange={(e) => handleInputChange('receiverPhone', e.target.value)}
-                      className="mt-2"
-                      required
-                    />
+                    <Label htmlFor="receiverPhone" className="text-base font-semibold text-slate-700">
+                      Telefone/WhatsApp *
+                    </Label>
+                    <div className="relative mt-2">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        id="receiverPhone"
+                        type="tel"
+                        placeholder="+55 11 99999-9999"
+                        value={formData.receiverPhone}
+                        onChange={(e) => handleInputChange('receiverPhone', e.target.value)}
+                        className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Bank Info Section */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg">Informações Bancárias</h3>
+                <div className="space-y-5">
+                  <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
+                    <Building2 className="w-5 h-5 text-green-600" />
+                    Informações Bancárias
+                  </h3>
 
                   <div>
-                    <Label htmlFor="bankCountry">País da Conta *</Label>
+                    <Label htmlFor="bankCountry" className="text-base font-semibold text-slate-700">
+                      País da Conta *
+                    </Label>
                     <Select value={formData.bankCountry} onValueChange={(value) => handleInputChange('bankCountry', value)}>
-                      <SelectTrigger id="bankCountry" className="mt-2">
+                      <SelectTrigger id="bankCountry" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white">
                         <SelectValue placeholder="Selecione o país" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="BR">🇧🇷 Brasil</SelectItem>
-                        <SelectItem value="US">🇺🇸 Estados Unidos</SelectItem>
-                        <SelectItem value="EU">🇪🇺 Europa (IBAN)</SelectItem>
-                        <SelectItem value="GB">🇬🇧 Reino Unido</SelectItem>
-                        <SelectItem value="AR">🇦🇷 Argentina</SelectItem>
-                        <SelectItem value="PY">🇵🇾 Paraguai</SelectItem>
-                        <SelectItem value="OTHER">Outro</SelectItem>
+                      <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
+                        <SelectItem value="BR" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🇧🇷 Brasil
+                        </SelectItem>
+                        <SelectItem value="US" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🇺🇸 Estados Unidos
+                        </SelectItem>
+                        <SelectItem value="EU" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🇪🇺 Europa (IBAN)
+                        </SelectItem>
+                        <SelectItem value="AR" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🇦🇷 Argentina
+                        </SelectItem>
+                        <SelectItem value="PY" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🇵🇾 Paraguai
+                        </SelectItem>
+                        <SelectItem value="OTHER" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🌎 Outro
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor="bankName">Nome do Banco *</Label>
-                    <Input
-                      id="bankName"
-                      type="text"
-                      placeholder="Ex: Banco do Brasil, BBVA, etc"
-                      value={formData.bankName}
-                      onChange={(e) => handleInputChange('bankName', e.target.value)}
-                      className="mt-2"
-                      required
-                    />
+                    <Label htmlFor="bankName" className="text-base font-semibold text-slate-700">
+                      Nome do Banco *
+                    </Label>
+                    <div className="relative mt-2">
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        id="bankName"
+                        type="text"
+                        placeholder="Ex: Banco do Brasil, BBVA, etc"
+                        value={formData.bankName}
+                        onChange={(e) => handleInputChange('bankName', e.target.value)}
+                        className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="accountType">Tipo de Conta *</Label>
+                    <Label htmlFor="accountType" className="text-base font-semibold text-slate-700">
+                      Tipo de Conta *
+                    </Label>
                     <Select value={formData.accountType} onValueChange={(value) => handleInputChange('accountType', value)}>
-                      <SelectTrigger id="accountType" className="mt-2">
+                      <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="checking">Conta Corrente</SelectItem>
-                        <SelectItem value="savings">Conta Poupança</SelectItem>
+                      <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
+                        <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          💳 Conta Corrente
+                        </SelectItem>
+                        <SelectItem value="savings" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          🏦 Conta Poupança
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor="accountNumber">Número da Conta *</Label>
-                    <Input
-                      id="accountNumber"
-                      type="text"
-                      placeholder="123456789"
-                      value={formData.accountNumber}
-                      onChange={(e) => handleInputChange('accountNumber', e.target.value)}
-                      className="mt-2"
-                      required
-                    />
+                    <Label htmlFor="accountNumber" className="text-base font-semibold text-slate-700">
+                      Número da Conta *
+                    </Label>
+                    <div className="relative mt-2">
+                      <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        id="accountNumber"
+                        type="text"
+                        placeholder="123456789"
+                        value={formData.accountNumber}
+                        onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+                        className="pl-11 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        required
+                      />
+                    </div>
                   </div>
 
                   {formData.bankCountry === 'BR' && (
                     <div>
-                      <Label htmlFor="routingNumber">Agência (com dígito) *</Label>
+                      <Label htmlFor="routingNumber" className="text-base font-semibold text-slate-700">
+                        Agência (com dígito)
+                      </Label>
                       <Input
                         id="routingNumber"
                         type="text"
                         placeholder="1234-5"
                         value={formData.routingNumber}
                         onChange={(e) => handleInputChange('routingNumber', e.target.value)}
-                        className="mt-2"
+                        className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                       />
                     </div>
                   )}
 
-                  {formData.bankCountry !== 'BR' && formData.bankCountry !== 'EU' && (
+                  {formData.bankCountry !== 'BR' && formData.bankCountry !== 'EU' && formData.bankCountry && (
                     <div>
-                      <Label htmlFor="swiftCode">Código SWIFT/BIC *</Label>
+                      <Label htmlFor="swiftCode" className="text-base font-semibold text-slate-700">
+                        Código SWIFT/BIC *
+                      </Label>
                       <Input
                         id="swiftCode"
                         type="text"
                         placeholder="ABCDUS33"
                         value={formData.swiftCode}
                         onChange={(e) => handleInputChange('swiftCode', e.target.value)}
-                        className="mt-2"
+                        className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                         required={formData.bankCountry !== 'BR' && formData.bankCountry !== 'EU'}
                       />
                     </div>
@@ -376,30 +447,45 @@ export default function ReceiverInfoPage({ language }) {
 
                   {formData.bankCountry === 'EU' && (
                     <div>
-                      <Label htmlFor="iban">IBAN *</Label>
+                      <Label htmlFor="iban" className="text-base font-semibold text-slate-700">
+                        IBAN *
+                      </Label>
                       <Input
                         id="iban"
                         type="text"
                         placeholder="DE89370400440532013000"
                         value={formData.iban}
                         onChange={(e) => handleInputChange('iban', e.target.value)}
-                        className="mt-2"
+                        className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                         required={formData.bankCountry === 'EU'}
                       />
                     </div>
                   )}
                 </div>
 
+                {/* Submit Button */}
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  {submitting ? 'Salvando...' : 'Continuar para Verificação'}
+                  {submitting ? (
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 animate-spin" />
+                      Salvando informações...
+                    </span>
+                  ) : (
+                    'Continuar para Verificação'
+                  )}
                 </Button>
               </form>
             </CardContent>
           </Card>
+
+          {/* Security Notice */}
+          <div className="mt-6 text-center text-sm text-slate-600 bg-blue-50 p-4 rounded-xl border border-blue-200">
+            <p className="font-medium">🔒 Suas informações estão seguras e criptografadas</p>
+          </div>
         </div>
       </section>
     </div>
