@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
-import { HashRouter as Router, Routes, Route } from 'react-router-dom' // ← Aqui trocamos BrowserRouter por HashRouter
+import { HashRouter as Router, Routes, Route } from 'react-router-dom' // ← HashRouter mantido
 import './App.css'
 import { AuthProvider } from './hooks/use-auth'
+
+// 🌐 Componentes
+import LanguageModal from './components/LanguageModal'
+import ScrollToTop from './components/ScrollToTop' // 👈 Importação do ScrollToTop
 
 // 🏠 Páginas
 import HomePage from './pages/HomePage'
@@ -20,8 +24,6 @@ import DashboardPage from './pages/DashboardPage'
 import ReceiverInfoPage from './pages/ReceiverInfoPage'
 import WhatsAppVerifyPage from './pages/WhatsAppVerifyPage'
 
-// 🌐 Componentes
-import LanguageModal from './components/LanguageModal'
 
 function App() {
   const [showLanguageModal, setShowLanguageModal] = useState(false)
@@ -46,6 +48,9 @@ function App() {
   return (
     <AuthProvider>
     <Router>
+      {/* 👈 SOLUÇÃO FINAL: ScrollToTop deve estar aqui */}
+      <ScrollToTop /> 
+
       {/* Modal de idioma */}
       <LanguageModal
         isOpen={showLanguageModal}
