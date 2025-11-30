@@ -391,8 +391,10 @@ export default function ReceiverInfoPage({ language }) {
                             formData.accountType === 'checking' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
                           )}
                           onClick={() => handleInputChange('accountType', 'checking')}
+                          role="radio"
+                          aria-checked={formData.accountType === 'checking'}
                         >
-                          <RadioGroupItem value="checking" id="checking" className="h-5 w-5" />
+                          <RadioGroupItem value="checking" id="checking" className="h-5 w-5 border-blue-600 text-blue-600" />
                           <Label htmlFor="checking" className="text-base font-medium cursor-pointer">
                             Conta Corrente
                           </Label>
@@ -403,8 +405,10 @@ export default function ReceiverInfoPage({ language }) {
                             formData.accountType === 'savings' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
                           )}
                           onClick={() => handleInputChange('accountType', 'savings')}
+                          role="radio"
+                          aria-checked={formData.accountType === 'savings'}
                         >
-                          <RadioGroupItem value="savings" id="savings" className="h-5 w-5" />
+                          <RadioGroupItem value="savings" id="savings" className="h-5 w-5 border-blue-600 text-blue-600" />
                           <Label htmlFor="savings" className="text-base font-medium cursor-pointer">
                             Conta Poupança
                           </Label>
