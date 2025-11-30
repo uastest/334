@@ -162,7 +162,7 @@ export default function ReceiverInfoPage({ language }) {
       })
 
       // Redirecionar para a próxima etapa (onde os detalhes de pagamento serão tratados)
-      navigate(`/payment-details/${transactionId}`)
+      navigate(`/whatsapp-verify/${transactionId}`)
     } catch (err) {
       console.error('Erro ao salvar informações:', err)
       setError('Erro ao salvar as informações. Por favor, verifique os dados e tente novamente.')
