@@ -1,9 +1,9 @@
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select' // Removido por causar instabilidade
 import { ArrowRight, TrendingUp, LogOut, User, ArrowLeftRight, DollarSign, Clock, CheckCircle, BarChart3 } from 'lucide-react' // Adicionado Settings e BarChart3
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
@@ -234,18 +234,17 @@ export default function DashboardPage({ language }) {
                       max="999999999"
                       step="0.01"
                     />
-                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger className="w-[160px] text-base">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent position="popper" className="bg-white">
-                        {currencies.map((curr) => (
-                          <SelectItem key={curr.code} value={curr.code}>
-                            {curr.flag} {curr.code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <select
+                      value={fromCurrency}
+                      onChange={(e) => setFromCurrency(e.target.value)}
+                      className="w-[160px] text-base border border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:ring-blue-500 bg-white shadow-sm"
+                    >
+                      {currencies.map((curr) => (
+                        <option key={curr.code} value={curr.code}>
+                          {curr.flag} {curr.code}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -276,18 +275,17 @@ export default function DashboardPage({ language }) {
                       readOnly
                       className="flex-1 text-2xl p-3 font-extrabold bg-green-50 border-green-300 text-green-800"
                     />
-                    <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger className="w-[160px] text-base">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent position="popper" className="bg-white">
-                        {currencies.map((curr) => (
-                          <SelectItem key={curr.code} value={curr.code}>
-                            {curr.flag} {curr.code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <select
+                      value={toCurrency}
+                      onChange={(e) => setToCurrency(e.target.value)}
+                      className="w-[160px] text-base border border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:ring-blue-500 bg-white shadow-sm"
+                    >
+                      {currencies.map((curr) => (
+                        <option key={curr.code} value={curr.code}>
+                          {curr.flag} {curr.code}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
