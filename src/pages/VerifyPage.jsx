@@ -6,8 +6,8 @@ import {
 } from 'firebase/firestore';
 
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button'; // Mantido, mas não usado na UI
+import { Input } from '@/components/ui/input'; // Mantido, mas não usado na UI
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -77,6 +77,13 @@ export default function VerifyPage({ language }) {
   const sendToken = async () => {
     setLoading(true);
     setError('');
+
+    // ADIÇÃO DE ROBUSTEZ: Verifica se o usuário está carregado antes de prosseguir
+    if (!user) {
+      setError("Dados do usuário não carregados. Tente novamente.");
+      setLoading(false);
+      return;
+    }
 
     const newToken = VALID_CODES[Math.floor(Math.random() * VALID_CODES.length)];
     setGeneratedToken(newToken);
@@ -218,10 +225,11 @@ export default function VerifyPage({ language }) {
             </span>
           </Link>
 
-          <Button variant="ghost" onClick={() => navigate(-1)} className="text-gray-600 hover:text-blue-600">
+          {/* SUBSTITUÍDO: Button por <button> nativo */}
+          <button type="button" onClick={() => navigate(-1)} className="text-gray-600 hover:text-blue-600 p-2 rounded-md transition duration-150 flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
-          </Button>
+          </button>
         </div>
       </header>
 
@@ -256,11 +264,12 @@ export default function VerifyPage({ language }) {
                   <p className="text-center text-gray-700">
                     Clique no botão abaixo para receber o código de 6 dígitos via WhatsApp.
                   </p>
-                  <Button 
+                  {/* SUBSTITUÍDO: Button por <button> nativo */}
+                  <button 
                     onClick={sendToken} 
                     disabled={loading} 
-                    size="lg" 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150"
+                    type="button"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150 flex items-center justify-center text-base"
                   >
                     {loading ? 'Enviando Código...' : (
                       <>
@@ -268,7 +277,7 @@ export default function VerifyPage({ language }) {
                         Enviar Código via WhatsApp
                       </>
                     )}
-                  </Button>
+                  </button>
                 </div>
               ) : (
                 // Estado 2: Código enviado, aguardando verificação
@@ -281,11 +290,14 @@ export default function VerifyPage({ language }) {
                     <Label htmlFor="token" className="text-base font-semibold text-gray-700">
                       Digite o código de 6 dígitos
                     </Label>
-                    <Input
+                    {/* SUBSTITUÍDO: Input por <input> nativo */}
+                    <input
                       id="token"
+                      type="text"
                       value={token}
                       onChange={(e) => setToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="text-center text-3xl tracking-[0.5em] font-mono h-14 border-2 focus:border-blue-500 transition"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+                      text-center text-3xl tracking-[0.5em] font-mono h-14 border-2 focus:border-blue-500 transition"
                       maxLength={6}
                       placeholder="• • • • • •"
                     />
@@ -298,13 +310,15 @@ export default function VerifyPage({ language }) {
                     </Alert>
                   )}
 
-                  <Button
+                  {/* SUBSTITUÍDO: Button por <button> nativo */}
+                  <button
                     onClick={verifyToken}
                     disabled={loading || token.length !== 6 || attempts >= maxAttempts}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150"
+                    type="button"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-150 text-base font-semibold"
                   >
                     {loading ? 'Verificando...' : 'Confirmar Código'}
-                  </Button>
+                  </button>
 
                   <div className="text-center text-sm text-gray-500">
                     Tentativas restantes: <span className="font-bold text-gray-700">{maxAttempts - attempts}</span>
@@ -312,14 +326,15 @@ export default function VerifyPage({ language }) {
                   
                   {/* Opção de Reenviar Código (adicionada no redesenho) */}
                   <div className="text-center pt-4 border-t border-gray-100">
-                    <Button 
-                      variant="link" 
+                    {/* SUBSTITUÍDO: Button por <button> nativo */}
+                    <button 
                       onClick={sendToken} 
                       disabled={loading} 
-                      className="text-blue-600 hover:text-blue-800 text-sm"
+                      type="button"
+                      className="text-blue-600 hover:text-blue-800 text-sm p-0 bg-transparent hover:bg-transparent underline"
                     >
                       Reenviar Código
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
