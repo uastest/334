@@ -227,8 +227,7 @@ export default function ReceiverInfoPage({ language }) {
           <div className="bg-yellow-50 border-2 border-yellow-300 text-yellow-800 px-4 py-3 rounded-xl text-base flex gap-3 items-start shadow-sm mb-8">
             <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-yellow-600" />
             <span className="font-medium">
-              **ATENÇÃO:** A conta de recebimento deve estar **OBRIGATORIAMENTE** no mesmo nome do seu cadastro na nossa casa de câmbio.
-              Seu nome de cadastro é: **{user.displayName || 'Não Informado'}**.
+              **ATENÇÃO:** A conta de recebimento deve estar **OBRIGATORIAMENTE** no mesmo nome do seu cadastro: **{user.displayName || 'Não Informado'}**.
             </span>
           </div>
 
@@ -366,7 +365,8 @@ export default function ReceiverInfoPage({ language }) {
                         <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2 bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
+                        {/* CORREÇÃO APLICADA: Adicionado position="popper" para tentar evitar o salto de scroll */}
+                        <SelectContent position="popper" className="bg-white border-2 border-slate-200 shadow-xl">
                           <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
                             Conta Corrente
                           </SelectItem>
