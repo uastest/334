@@ -1,22 +1,14 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase'
 import { collection, addDoc } from 'firebase/firestore'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowRight, Shield, Clock, DollarSign, CheckCircle, TrendingUp, Globe, Lock, Zap, Users, ArrowLeftRight, Star, Briefcase, BarChart3, Smile } from 'lucide-react'
+import { ArrowRight, TrendingUp, Zap, Shield, Globe, Users, CheckCircle, Star, ArrowLeftRight, Gauge, Lock, Smartphone } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import Footer from '../components/Footer'
-
-/**
- * Design Philosophy: Premium Fintech Exchange
- * - Modern gradient backgrounds with subtle animations
- * - Clear information hierarchy with trust-building elements
- * - Professional color palette (blue, green, white)
- * - Responsive and accessible design
- */
 
 const currencies = [
   { code: 'USD', name: 'Dólar Americano', symbol: '$', flag: '🇺🇸' },
@@ -38,6 +30,19 @@ export default function HomePage({ language }) {
   const [exchangeRate, setExchangeRate] = useState(5.5)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [scrollY, setScrollY] = useState(0)
+
+  // 🔧 FIX: Scroll reset ao montar o componente
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  // 🎨 Parallax effect
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const fetchExchangeRate = async () => {
@@ -113,84 +118,124 @@ export default function HomePage({ language }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-transparent to-green-600/5 pointer-events-none" />
-        
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          {/* Badge */}
-          <div className="flex justify-center mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-green-700 font-medium text-sm">
-              <Star className="w-4 h-4" />
-              Melhores Taxas do Mercado
-            </span>
-          </div>
+    <div className="min-h-screen bg-white overflow-hidden">
+      {/* 🎨 HERO SECTION - Premium & Inovador */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 via-blue-500 to-green-500">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl" style={{ transform: `translateY(${scrollY * 0.5}px)` }} />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl" style={{ transform: `translateY(${-scrollY * 0.3}px)` }} />
+        </div>
 
-          {/* Main Headline */}
-          <div className="text-center mb-12 max-w-3xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-700 to-green-600">
-              Câmbio Internacional Descomplicado
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              Taxas competitivas, processamento rápido e segurança garantida. Envie dinheiro para qualquer lugar do mundo com confiança.
-            </p>
-          </div>
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 max-w-6xl py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Text */}
+            <div className="text-white space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full">
+                <Star className="w-4 h-4" />
+                <span className="text-sm font-semibold">Líder em Câmbio Internacional</span>
+              </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button 
-              onClick={() => navigate('/register')}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-6 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base"
-            >
-              Começar Agora
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button 
-              onClick={() => navigate('/login')}
-              variant="outline"
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-6 px-8 rounded-lg transition-all duration-300 text-base"
-            >
-              Já tenho conta
-            </Button>
+              <h1 className="text-6xl lg:text-7xl font-bold leading-tight">
+                Seu Dinheiro, <span className="text-green-200">Sem Fronteiras</span>
+              </h1>
+
+              <p className="text-xl text-white/90 leading-relaxed max-w-lg">
+                Envie dinheiro para qualquer lugar do mundo em minutos. Taxas justas, conversão instantânea e segurança garantida.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button 
+                  onClick={() => navigate('/register')}
+                  className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-6 px-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 text-base flex items-center justify-center gap-2"
+                >
+                  Começar Agora
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+                <Button 
+                  onClick={() => navigate('/login')}
+                  className="border-2 border-white text-white hover:bg-white/10 font-bold py-6 px-8 rounded-lg backdrop-blur-sm transition-all duration-300 text-base"
+                >
+                  Já tenho conta
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-white/20">
+                <div>
+                  <p className="text-2xl font-bold">50K+</p>
+                  <p className="text-white/70 text-sm">Usuários Ativos</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">$2B+</p>
+                  <p className="text-white/70 text-sm">Transações</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">150+</p>
+                  <p className="text-white/70 text-sm">Países</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Visual */}
+            <div className="relative h-96 lg:h-full hidden lg:flex items-center justify-center">
+              <div className="relative w-full h-full flex items-center justify-center">
+                {/* Animated Cards */}
+                <div className="absolute w-72 h-40 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl" style={{ transform: `translateY(${scrollY * 0.2}px) rotate(-5deg)` }}>
+                  <p className="text-white/70 text-sm mb-2">Taxa Atual</p>
+                  <p className="text-3xl font-bold text-green-200">1 USD = 5.50 BRL</p>
+                </div>
+                <div className="absolute w-72 h-40 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl top-32" style={{ transform: `translateY(${-scrollY * 0.15}px) rotate(5deg)` }}>
+                  <p className="text-white/70 text-sm mb-2">Você Receberá</p>
+                  <p className="text-3xl font-bold text-blue-200">R$ 5,500.00</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Converter Card Section */}
-      <section className="container mx-auto px-4 max-w-7xl mb-24">
-        <Card className="shadow-2xl border-0 bg-white">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-t-lg">
+      {/* 💱 CONVERTER SECTION - Interactive */}
+      <section className="container mx-auto px-4 max-w-6xl py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4 text-gray-900">Conversor em Tempo Real</h2>
+          <p className="text-lg text-gray-600">Veja exatamente quanto você vai receber antes de confirmar</p>
+        </div>
+
+        <Card className="shadow-2xl border-0 overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-green-500 text-white p-8">
             <CardTitle className="text-2xl">{t('converterTitle')}</CardTitle>
-            <CardDescription className="text-blue-100">Taxa de câmbio atualizada em tempo real</CardDescription>
+            <CardDescription className="text-blue-100 mt-2">Taxa de câmbio atualizada em tempo real</CardDescription>
           </CardHeader>
-          <CardContent className="p-8 space-y-6">
+          
+          <CardContent className="p-8 space-y-8">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-red-200 flex items-center justify-center flex-shrink-0 mt-0.5">!</div>
+              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded flex items-start gap-3">
+                <div className="text-red-500 font-bold">!</div>
                 <span>{error}</span>
               </div>
             )}
 
             {/* Amount Input */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Valor a Converter</label>
+            <div className="space-y-3">
+              <label className="block text-sm font-bold text-gray-700">Valor a Converter</label>
               <Input 
                 value={amount} 
                 onChange={e => setAmount(e.target.value)}
                 type="number"
                 placeholder="1000"
-                className="text-lg py-6 border-2 border-gray-200 focus:border-blue-600 focus:ring-blue-600"
+                className="text-2xl py-6 border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 rounded-lg font-bold"
               />
             </div>
 
             {/* Currency Selectors */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-              {/* From Currency */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">De</label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+              <div className="space-y-3">
+                <label className="block text-sm font-bold text-gray-700">De</label>
                 <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                  <SelectTrigger className="py-6 border-2 border-gray-200 focus:border-blue-600">
+                  <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-lg font-semibold">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -203,21 +248,19 @@ export default function HomePage({ language }) {
                 </Select>
               </div>
 
-              {/* Swap Button */}
               <div className="flex justify-center">
                 <button
                   onClick={handleSwapCurrencies}
-                  className="p-3 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-lg transition-all duration-200 transform hover:scale-110"
+                  className="p-4 bg-gradient-to-br from-blue-100 to-green-100 hover:from-blue-200 hover:to-green-200 text-blue-600 rounded-full transition-all duration-300 transform hover:scale-110 shadow-lg"
                 >
-                  <ArrowLeftRight className="w-5 h-5" />
+                  <ArrowLeftRight className="w-6 h-6" />
                 </button>
               </div>
 
-              {/* To Currency */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Para</label>
+              <div className="space-y-3">
+                <label className="block text-sm font-bold text-gray-700">Para</label>
                 <Select value={toCurrency} onValueChange={setToCurrency}>
-                  <SelectTrigger className="py-6 border-2 border-gray-200 focus:border-blue-600">
+                  <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-lg font-semibold">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -231,26 +274,32 @@ export default function HomePage({ language }) {
               </div>
             </div>
 
-            {/* Exchange Rate Display */}
-            <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg border border-blue-200">
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Taxa de Câmbio</p>
-                  <p className="text-2xl font-bold text-blue-600">{exchangeRate.toFixed(4)}</p>
+            {/* Exchange Rate Display - Premium */}
+            <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 p-8 rounded-xl border-2 border-blue-200 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-2 font-semibold">Taxa de Câmbio</p>
+                  <p className="text-3xl font-bold text-blue-600">{exchangeRate.toFixed(4)}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-600 mb-1">Você Receberá</p>
-                  <p className="text-2xl font-bold text-green-600">{convertedAmount}</p>
+                <div className="flex items-center justify-center">
+                  <div className="text-center">
+                    <Gauge className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                    <p className="text-xs text-gray-500">Conversão</p>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-2 font-semibold">Você Receberá</p>
+                  <p className="text-3xl font-bold text-green-600">{convertedAmount}</p>
                 </div>
               </div>
-              <p className="text-xs text-gray-500">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</p>
+              <p className="text-center text-xs text-gray-500 border-t pt-4">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</p>
             </div>
 
-            {/* Convert Button */}
+            {/* Convert Button - CTA */}
             <Button 
               onClick={handleConvert} 
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base"
+              className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-bold py-7 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 text-lg disabled:opacity-50"
             >
               {loading ? 'Processando...' : 'Iniciar Transação'}
               {!loading && <ArrowRight className="ml-2 w-5 h-5" />}
@@ -259,105 +308,85 @@ export default function HomePage({ language }) {
         </Card>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4 max-w-7xl mb-24">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 text-gray-900">Por que nos escolher?</h2>
-          <p className="text-lg text-gray-600">Segurança, velocidade e transparência em cada transação</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
-            <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-              <TrendingUp className="w-7 h-7 text-blue-600" />
-            </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">Melhores Taxas</h3>
-            <p className="text-gray-600">Comparamos constantemente o mercado para oferecer as taxas mais competitivas do setor.</p>
+      {/* ✨ FEATURES SECTION - Inovador */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-24">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold mb-6 text-gray-900">Por que somos diferentes?</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Tecnologia de ponta + atendimento humano = a melhor experiência de câmbio</p>
           </div>
 
-          {/* Feature 2 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100">
-            <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-              <Zap className="w-7 h-7 text-green-600" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <TrendingUp className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Melhores Taxas</h3>
+              <p className="text-gray-600">Algoritmo inteligente que compara o mercado em tempo real para oferecer as melhores taxas.</p>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">Processamento Rápido</h3>
-            <p className="text-gray-600">Suas transações são processadas em minutos, não em dias. Velocidade garantida.</p>
-          </div>
 
-          {/* Feature 3 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
-            <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-              <Shield className="w-7 h-7 text-blue-600" />
+            {/* Feature 2 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-green-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Instantâneo</h3>
+              <p className="text-gray-600">Processamento em minutos, não em dias. Seu dinheiro chega rápido e seguro.</p>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">100% Seguro</h3>
-            <p className="text-gray-600">Criptografia de ponta a ponta e conformidade regulatória garantem sua segurança.</p>
-          </div>
 
-          {/* Feature 4 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100">
-            <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-              <Globe className="w-7 h-7 text-green-600" />
+            {/* Feature 3 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Shield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Segurança Total</h3>
+              <p className="text-gray-600">Criptografia de ponta a ponta e conformidade com regulamentações internacionais.</p>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">Cobertura Global</h3>
-            <p className="text-gray-600">Enviamos para mais de 150 países com suporte a múltiplas moedas.</p>
-          </div>
 
-          {/* Feature 5 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
-            <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-              <Users className="w-7 h-7 text-blue-600" />
+            {/* Feature 4 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-green-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Globe className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Cobertura Global</h3>
+              <p className="text-gray-600">Mais de 150 países e múltiplas moedas. Envie para qualquer lugar.</p>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">Suporte 24/7</h3>
-            <p className="text-gray-600">Nossa equipe está sempre disponível para ajudar com suas dúvidas.</p>
-          </div>
 
-          {/* Feature 6 */}
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100">
-            <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-              <CheckCircle className="w-7 h-7 text-green-600" />
+            {/* Feature 5 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Smartphone className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">App Intuitivo</h3>
+              <p className="text-gray-600">Interface simples e poderosa. Qualquer pessoa consegue usar em segundos.</p>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900">Transparência Total</h3>
-            <p className="text-gray-600">Sem taxas ocultas. Você sabe exatamente quanto vai pagar e receber.</p>
-          </div>
-        </div>
-      </section>
 
-      {/* Trust Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-16 mb-24">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <p className="text-4xl font-bold mb-2">50K+</p>
-              <p className="text-blue-100">Usuários Ativos</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold mb-2">$2B+</p>
-              <p className="text-blue-100">Transações Processadas</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold mb-2">150+</p>
-              <p className="text-blue-100">Países Cobertos</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold mb-2">99.9%</p>
-              <p className="text-blue-100">Uptime Garantido</p>
+            {/* Feature 6 */}
+            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-green-200 hover:scale-105">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Users className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Suporte 24/7</h3>
+              <p className="text-gray-600">Equipe dedicada sempre pronta para ajudar com qualquer dúvida ou problema.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 max-w-7xl mb-24 text-center">
-        <h2 className="text-4xl font-bold mb-6 text-gray-900">Pronto para começar?</h2>
-        <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Abra sua conta em minutos e comece a enviar dinheiro hoje mesmo com as melhores taxas do mercado.</p>
-        <Button 
-          onClick={() => navigate('/register')}
-          className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-6 px-10 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base"
-        >
-          Criar Conta Gratuita
-          <ArrowRight className="ml-2 w-5 h-5" />
-        </Button>
+      {/* 🎯 FINAL CTA SECTION */}
+      <section className="bg-gradient-to-r from-blue-600 to-green-500 py-20">
+        <div className="container mx-auto px-4 max-w-4xl text-center text-white space-y-8">
+          <h2 className="text-5xl font-bold">Pronto para começar?</h2>
+          <p className="text-xl text-white/90">Abra sua conta em 2 minutos e comece a enviar dinheiro hoje mesmo.</p>
+          <Button 
+            onClick={() => navigate('/register')}
+            className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-6 px-10 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 text-lg inline-flex items-center gap-2"
+          >
+            Criar Conta Gratuita
+            <ArrowRight className="w-5 h-5" />
+          </Button>
+        </div>
       </section>
 
       <Footer />
