@@ -42,6 +42,11 @@ export default function DashboardPage({ language }) {
     }
   }, [user, loading, navigate])
 
+  // Correção de Scroll Local: Força o scroll para o topo na montagem do componente
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Validar entrada de valor (MANTIDA INTACTA)
   const isValidAmount = (val) => {
     const num = parseFloat(val)
