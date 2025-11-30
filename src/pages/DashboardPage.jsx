@@ -42,11 +42,6 @@ export default function DashboardPage({ language }) {
     }
   }, [user, loading, navigate])
 
-  // Correção de Scroll para o Topo (Solução para o problema de tela branca/scroll)
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   // Validar entrada de valor (MANTIDA INTACTA)
   const isValidAmount = (val) => {
     const num = parseFloat(val)
@@ -148,7 +143,7 @@ export default function DashboardPage({ language }) {
     }
   }
 
-  if (loading) {
+  if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
