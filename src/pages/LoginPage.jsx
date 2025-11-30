@@ -131,7 +131,7 @@ const LoginForm = ({ t, navigate, toggleForm }) => {
         {t('noAccount')}
         <button
           type="button"
-          onClick={toggleForm}
+          onClick={() => navigate('/#/register')}
           className="ml-2 font-bold text-blue-600 hover:text-blue-700 transition-colors"
         >
           {t('register')}
