@@ -236,7 +236,7 @@ export default function DashboardPage({ language }) {
                       <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent position="popper">
                         {currencies.map((curr) => (
                           <SelectItem key={curr.code} value={curr.code}>
                             {curr.flag} {curr.code}
@@ -278,7 +278,7 @@ export default function DashboardPage({ language }) {
                       <SelectTrigger className="w-[160px] text-base">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent position="popper">
                         {currencies.map((curr) => (
                           <SelectItem key={curr.code} value={curr.code}>
                             {curr.flag} {curr.code}
