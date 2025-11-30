@@ -7,19 +7,20 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
-  ArrowRight, TrendingUp, Zap, Shield, Globe, Users, CheckCircle, Star, 
-  ArrowLeftRight, Lock, Smartphone, Wallet, Headphones, Award, Clock, DollarSign 
+  ArrowRight, TrendingUp, Zap, Shield, Globe, Users, 
+  ArrowLeftRight, Lock, Smartphone, Wallet, Headphones, Award, Clock, DollarSign,
+  ChevronDown
 } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import Footer from '../components/Footer'
 
 const currencies = [
-  { code: 'USD', name: 'Dólar Americano', symbol: '$', flag: '🇺🇸', country: 'Estados Unidos', bg: 'from-blue-600 to-blue-700' },
-  { code: 'PYG', name: 'Guarani Paraguaio', symbol: '₲', flag: '🇵🇾', country: 'Paraguai', bg: 'from-red-600 to-red-700' },
-  { code: 'BRL', name: 'Real Brasileiro', symbol: 'R$', flag: '🇧🇷', country: 'Brasil', bg: 'from-green-600 to-green-700' },
-  { code: 'ARS', name: 'Peso Argentino', symbol: '$', flag: '🇦🇷', country: 'Argentina', bg: 'from-sky-600 to-sky-700' },
-  { code: 'EUR', name: 'Euro', symbol: '€', flag: '🇪🇺', country: 'Europa', bg: 'from-yellow-600 to-yellow-700' },
-  { code: 'GBP', name: 'Libra Esterlina', symbol: '£', flag: '🇬🇧', country: 'Reino Unido', bg: 'from-purple-600 to-purple-700' },
+  { code: 'USD', name: 'Dólar Americano', symbol: '$' },
+  { code: 'PYG', name: 'Guarani Paraguaio', symbol: '₲' },
+  { code: 'BRL', name: 'Real Brasileiro', symbol: 'R$' },
+  { code: 'ARS', name: 'Peso Argentino', symbol: '$' },
+  { code: 'EUR', name: 'Euro', symbol: '€' },
+  { code: 'GBP', name: 'Libra Esterlina', symbol: '£' },
 ]
 
 const AnimatedNumber = ({ value, duration = 2000 }) => {
@@ -51,7 +52,7 @@ export default function HomePage({ language }) {
   const [fromCurrency, setFromCurrency] = useState('USD')
   const [toCurrency, setToCurrency] = useState('PYG')
   const [convertedAmount, setConvertedAmount] = useState(0)
-  const [exchangeRate, setExchangeRate] = useState(5.5)
+  const [exchangeRate, setExchangeRate] = useState(7200)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [scrollY, setScrollY] = useState(0)
@@ -142,9 +143,6 @@ export default function HomePage({ language }) {
       setLoading(false)
     }
   }
-
-  const fromCurrencyData = currencies.find(c => c.code === fromCurrency)
-  const toCurrencyData = currencies.find(c => c.code === toCurrency)
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
@@ -244,155 +242,115 @@ export default function HomePage({ language }) {
         </div>
       </section>
 
-      {/* ============ CONVERTER SECTION ============ */}
-      <section className="container mx-auto px-4 max-w-6xl py-24">
+      {/* ============ CONVERTER SECTION - CRIPTO STYLE ============ */}
+      <section className="container mx-auto px-4 max-w-3xl py-24">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-black mb-4 text-gray-900">Conversor de Moedas</h2>
-          <p className="text-lg text-gray-600">Veja exatamente quanto você vai receber antes de confirmar</p>
+          <p className="text-lg text-gray-600">Veja a taxa em tempo real e comece sua transação</p>
         </div>
 
         <Card className="shadow-2xl border-0 overflow-hidden bg-white">
           <CardHeader className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white p-8">
             <CardTitle className="text-3xl font-black">{t('converterTitle')}</CardTitle>
-            <CardDescription className="text-blue-100 mt-2 text-base">Taxa de câmbio atualizada em tempo real</CardDescription>
+            <CardDescription className="text-blue-100 mt-2 text-base">Taxa atualizada em tempo real</CardDescription>
           </CardHeader>
           
-          <CardContent className="p-10 space-y-8 bg-gradient-to-b from-white to-gray-50">
+          <CardContent className="p-8 space-y-8 bg-white">
             {error && (
-              <div className="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-start gap-3 animate-shake">
+              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-start gap-3">
                 <span className="text-red-600 font-black text-xl">!</span>
                 <span className="font-semibold">{error}</span>
               </div>
             )}
 
             {/* Amount Input */}
-            <div className="space-y-3">
-              <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">Valor a Converter</label>
-              <Input 
-                value={amount} 
-                onChange={e => setAmount(e.target.value)}
-                type="number"
-                placeholder="1000"
-                className="text-3xl py-7 border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 rounded-lg font-black text-gray-900 placeholder-gray-400 bg-white"
-              />
-            </div>
-
-            {/* Currency Selectors - PREMIUM */}
-            <div className="bg-white rounded-2xl p-8 border-2 border-gray-200 space-y-8 shadow-md">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                {/* FROM Currency */}
-                <div className="space-y-4">
-                  <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">De (Origem)</label>
-                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                    <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-xl font-black text-gray-900 text-base bg-white hover:border-blue-400 transition-all">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      {currencies.map(curr => (
-                        <SelectItem key={curr.code} value={curr.code} className="font-semibold py-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-2xl">{curr.flag}</span>
-                            <div>
-                              <p className="font-black">{curr.code}</p>
-                              <p className="text-xs text-gray-600">{curr.country}</p>
-                            </div>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {fromCurrencyData && (
-                    <div className={`bg-gradient-to-br ${fromCurrencyData.bg} text-white rounded-xl p-4 text-center shadow-lg transform hover:scale-105 transition-transform`}>
-                      <p className="text-5xl mb-2">{fromCurrencyData.flag}</p>
-                      <p className="font-black text-lg">{fromCurrencyData.code}</p>
-                      <p className="text-sm text-white/80">{fromCurrencyData.country}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* SWAP Button */}
-                <div className="flex justify-center">
-                  <button
-                    onClick={handleSwapCurrencies}
-                    className="p-4 bg-gradient-to-br from-blue-100 to-green-100 hover:from-blue-200 hover:to-green-200 text-blue-600 rounded-full transition-all duration-300 transform hover:scale-125 hover:rotate-180 shadow-lg font-bold border-2 border-blue-300"
-                  >
-                    <ArrowLeftRight className="w-6 h-6" />
-                  </button>
-                </div>
-
-                {/* TO Currency */}
-                <div className="space-y-4">
-                  <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">Para (Destino)</label>
-                  <Select value={toCurrency} onValueChange={setToCurrency}>
-                    <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-green-600 rounded-xl font-black text-gray-900 text-base bg-white hover:border-green-400 transition-all">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      {currencies.map(curr => (
-                        <SelectItem key={curr.code} value={curr.code} className="font-semibold py-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-2xl">{curr.flag}</span>
-                            <div>
-                              <p className="font-black">{curr.code}</p>
-                              <p className="text-xs text-gray-600">{curr.country}</p>
-                            </div>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {toCurrencyData && (
-                    <div className={`bg-gradient-to-br ${toCurrencyData.bg} text-white rounded-xl p-4 text-center shadow-lg transform hover:scale-105 transition-transform`}>
-                      <p className="text-5xl mb-2">{toCurrencyData.flag}</p>
-                      <p className="font-black text-lg">{toCurrencyData.code}</p>
-                      <p className="text-sm text-white/80">{toCurrencyData.country}</p>
-                    </div>
-                  )}
-                </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-gray-700">Você envia</label>
+              <div className="relative">
+                <Input 
+                  value={amount} 
+                  onChange={e => setAmount(e.target.value)}
+                  type="number"
+                  placeholder="0.00"
+                  className="text-4xl py-6 border-2 border-gray-200 focus:border-blue-500 focus:ring-0 rounded-lg font-bold text-gray-900 placeholder-gray-400 bg-white pr-16"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">{fromCurrency}</span>
               </div>
             </div>
 
-            {/* Exchange Rate Display */}
-            <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 p-10 rounded-2xl border-2 border-blue-200 space-y-6 shadow-lg">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center bg-white rounded-xl p-6 shadow-md">
-                  <p className="text-sm text-gray-600 mb-2 font-black uppercase">Taxa de Câmbio</p>
-                  <p className="text-5xl font-black text-blue-600">{exchangeRate.toFixed(4)}</p>
-                  <p className="text-xs text-gray-500 mt-2">Atualizado em tempo real</p>
-                </div>
-                <div className="flex items-center justify-center">
-                  <div className="text-center bg-white rounded-xl p-6 shadow-md">
-                    <Zap className="w-12 h-12 text-green-600 mx-auto mb-2 animate-pulse" />
-                    <p className="text-xs text-gray-600 font-bold">CONVERSÃO</p>
-                    <p className="text-xs text-gray-600 font-bold">INSTANTÂNEA</p>
-                  </div>
-                </div>
-                <div className="text-center bg-white rounded-xl p-6 shadow-md">
-                  <p className="text-sm text-gray-600 mb-2 font-black uppercase">Você Receberá</p>
-                  <p className="text-5xl font-black text-green-600">{convertedAmount}</p>
-                  <p className="text-xs text-gray-500 mt-2">{toCurrency}</p>
-                </div>
+            {/* Currency Swap - CRIPTO STYLE */}
+            <div className="space-y-4">
+              {/* FROM */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wider">De</label>
+                <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                  <SelectTrigger className="py-6 border-2 border-gray-200 focus:border-blue-500 focus:ring-0 rounded-lg font-semibold text-gray-900 text-base bg-white hover:border-gray-300 transition-all">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {currencies.map(curr => (
+                      <SelectItem key={curr.code} value={curr.code} className="font-semibold py-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-gray-900">{curr.code}</span>
+                          <span className="text-gray-500 text-sm">{curr.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <p className="text-center text-xs text-gray-600 border-t pt-4 font-bold">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</p>
+
+              {/* SWAP BUTTON */}
+              <div className="flex justify-center -my-2">
+                <button
+                  onClick={handleSwapCurrencies}
+                  className="p-3 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-full transition-all duration-300 transform hover:scale-110 shadow-md border-2 border-gray-300 hover:border-gray-400"
+                >
+                  <ArrowLeftRight className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* TO */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wider">Para</label>
+                <Select value={toCurrency} onValueChange={setToCurrency}>
+                  <SelectTrigger className="py-6 border-2 border-gray-200 focus:border-green-500 focus:ring-0 rounded-lg font-semibold text-gray-900 text-base bg-white hover:border-gray-300 transition-all">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {currencies.map(curr => (
+                      <SelectItem key={curr.code} value={curr.code} className="font-semibold py-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-gray-900">{curr.code}</span>
+                          <span className="text-gray-500 text-sm">{curr.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Resultado */}
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border-2 border-gray-200 space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-gray-600">Você receberá</span>
+                <span className="text-xs font-bold text-gray-500">Taxa: 1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-5xl font-black text-gray-900">{convertedAmount}</span>
+                <span className="text-2xl font-bold text-gray-600">{toCurrency}</span>
+              </div>
             </div>
 
             {/* Convert Button */}
             <Button 
               onClick={handleConvert} 
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 hover:from-blue-700 hover:via-blue-600 hover:to-green-600 text-white font-black py-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg disabled:opacity-50 uppercase tracking-wider border-0 transform hover:scale-105"
+              className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-black py-7 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base disabled:opacity-50 uppercase tracking-wider border-0"
             >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <Zap className="w-6 h-6 animate-spin" />
-                  Processando...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  Iniciar Transação
-                  <ArrowRight className="w-6 h-6" />
-                </span>
-              )}
+              {loading ? 'Processando...' : 'Iniciar Transação'}
+              {!loading && <ArrowRight className="ml-3 w-5 h-5" />}
             </Button>
           </CardContent>
         </Card>
@@ -419,13 +377,13 @@ export default function HomePage({ language }) {
               return (
                 <div 
                   key={idx}
-                  className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:scale-105 cursor-pointer"
+                  className="group bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300 hover:scale-105 cursor-pointer"
                 >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-125 transition-transform shadow-lg`}>
-                    <Icon className="w-8 h-8 text-white" />
+                  <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md`}>
+                    <Icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-black mb-3 text-gray-900">{feature.title}</h3>
-                  <p className="text-gray-600 font-semibold">{feature.desc}</p>
+                  <h3 className="text-xl font-black mb-2 text-gray-900">{feature.title}</h3>
+                  <p className="text-gray-600 font-semibold text-sm">{feature.desc}</p>
                 </div>
               )
             })}
@@ -462,18 +420,8 @@ export default function HomePage({ language }) {
           }
         }
 
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-
         .animate-fade-in {
           animation: fade-in 0.8s ease-out;
-        }
-
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
         }
       `}</style>
     </div>
