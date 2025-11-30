@@ -14,15 +14,14 @@ import { getTranslation } from '../utils/translations'
 import Footer from '../components/Footer'
 
 const currencies = [
-  { code: 'USD', name: 'Dólar Americano', symbol: '$', flag: '🇺🇸' },
-  { code: 'EUR', name: 'Euro', symbol: '€', flag: '🇪🇺' },
-  { code: 'GBP', name: 'Libra Esterlina', symbol: '£', flag: '🇬🇧' },
-  { code: 'BRL', name: 'Real Brasileiro', symbol: 'R$', flag: '🇧🇷' },
-  { code: 'PYG', name: 'Guarani Paraguaio', symbol: '₲', flag: '🇵🇾' },
-  { code: 'ARS', name: 'Peso Argentino', symbol: '$', flag: '🇦🇷' },
+  { code: 'USD', name: 'Dólar Americano', symbol: '$', flag: '🇺🇸', country: 'Estados Unidos', bg: 'from-blue-600 to-blue-700' },
+  { code: 'PYG', name: 'Guarani Paraguaio', symbol: '₲', flag: '🇵🇾', country: 'Paraguai', bg: 'from-red-600 to-red-700' },
+  { code: 'BRL', name: 'Real Brasileiro', symbol: 'R$', flag: '🇧🇷', country: 'Brasil', bg: 'from-green-600 to-green-700' },
+  { code: 'ARS', name: 'Peso Argentino', symbol: '$', flag: '🇦🇷', country: 'Argentina', bg: 'from-sky-600 to-sky-700' },
+  { code: 'EUR', name: 'Euro', symbol: '€', flag: '🇪🇺', country: 'Europa', bg: 'from-yellow-600 to-yellow-700' },
+  { code: 'GBP', name: 'Libra Esterlina', symbol: '£', flag: '🇬🇧', country: 'Reino Unido', bg: 'from-purple-600 to-purple-700' },
 ]
 
-// 🎨 Componente de Animação Simples
 const AnimatedNumber = ({ value, duration = 2000 }) => {
   const [displayValue, setDisplayValue] = useState(0)
 
@@ -50,22 +49,19 @@ export default function HomePage({ language }) {
 
   const [amount, setAmount] = useState('1000')
   const [fromCurrency, setFromCurrency] = useState('USD')
-  const [toCurrency, setToCurrency] = useState('BRL')
+  const [toCurrency, setToCurrency] = useState('PYG')
   const [convertedAmount, setConvertedAmount] = useState(0)
   const [exchangeRate, setExchangeRate] = useState(5.5)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [scrollY, setScrollY] = useState(0)
-  const [hoveredFeature, setHoveredFeature] = useState(null)
 
-  // 🔧 Scroll reset
   useEffect(() => {
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
   }, [])
 
-  // 🎨 Parallax effect
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
     window.addEventListener('scroll', handleScroll)
@@ -91,6 +87,8 @@ export default function HomePage({ language }) {
           'EUR-USD': 1.09,
           'GBP-USD': 1.27,
           'USD-GBP': 0.79,
+          'USD-ARS': 1050,
+          'ARS-USD': 0.00095,
         }
 
         const rateKey = `${fromCurrency}-${toCurrency}`
@@ -145,46 +143,45 @@ export default function HomePage({ language }) {
     }
   }
 
+  const fromCurrencyData = currencies.find(c => c.code === fromCurrency)
+  const toCurrencyData = currencies.find(c => c.code === toCurrency)
+
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* ============ HERO SECTION ============ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-        {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse" />
           <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-gradient-to-tr from-green-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
-        {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%, transparent)',
           backgroundSize: '50px 50px'
         }} />
 
-        {/* Content */}
         <div className="relative z-10 container mx-auto px-4 max-w-6xl py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left - Text */}
             <div className="text-white space-y-8 animate-fade-in">
               <div className="inline-flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-500/20 to-green-500/20 backdrop-blur-xl border border-blue-400/30 rounded-full hover:border-blue-400/60 transition-all duration-300">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span className="text-sm font-bold text-blue-200">Câmbio Express - Líder em Velocidade</span>
+                <span className="text-sm font-bold text-blue-200">Câmbio Express - Especialista em Paraguai</span>
               </div>
 
               <div className="space-y-4">
                 <h1 className="text-7xl lg:text-8xl font-black leading-tight">
-                  Câmbio<br />
+                  Compre<br />
                   <span className="bg-gradient-to-r from-blue-400 via-green-400 to-blue-400 bg-clip-text text-transparent animate-pulse">
-                    Sem Demora
-                  </span>
+                    Dólares
+                  </span><br />
+                  Para o Paraguai
                 </h1>
               </div>
 
               <p className="text-xl text-gray-300 leading-relaxed max-w-lg">
-                Envie dinheiro para qualquer lugar do mundo em minutos. Taxas justas, conversão instantânea e segurança de banco.
+                As melhores taxas para enviar dólares ao Paraguai. Rápido, seguro e com transparência total.
               </p>
 
-              {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-8">
                 <Button 
                   onClick={() => navigate('/register')}
@@ -201,7 +198,6 @@ export default function HomePage({ language }) {
                 </Button>
               </div>
 
-              {/* Trust Stats */}
               <div className="grid grid-cols-3 gap-4 pt-12 border-t border-blue-500/20">
                 <div>
                   <p className="text-3xl font-black text-green-400"><AnimatedNumber value={50} />K+</p>
@@ -218,10 +214,8 @@ export default function HomePage({ language }) {
               </div>
             </div>
 
-            {/* Right - Visual */}
             <div className="relative h-96 lg:h-full hidden lg:flex items-center justify-center">
               <div className="relative w-full h-full flex items-center justify-center perspective">
-                {/* Floating Cards */}
                 <div 
                   className="absolute w-80 h-48 bg-gradient-to-br from-blue-500/30 to-green-500/30 backdrop-blur-xl border border-blue-400/50 rounded-2xl p-6 shadow-2xl"
                   style={{ 
@@ -231,7 +225,7 @@ export default function HomePage({ language }) {
                 >
                   <p className="text-blue-200 text-sm mb-3 font-semibold">Taxa Atual</p>
                   <p className="text-4xl font-black text-green-300">1 USD</p>
-                  <p className="text-2xl font-bold text-blue-300 mt-2">= 5.50 BRL</p>
+                  <p className="text-2xl font-bold text-blue-300 mt-2">= 7,200 PYG</p>
                 </div>
                 <div 
                   className="absolute w-80 h-48 bg-gradient-to-br from-green-500/30 to-blue-500/30 backdrop-blur-xl border border-green-400/50 rounded-2xl p-6 shadow-2xl top-32"
@@ -241,7 +235,7 @@ export default function HomePage({ language }) {
                   }}
                 >
                   <p className="text-green-200 text-sm mb-3 font-semibold">Você Receberá</p>
-                  <p className="text-4xl font-black text-blue-300">R$ 5,500</p>
+                  <p className="text-4xl font-black text-blue-300">₲ 7.2M</p>
                   <p className="text-sm text-green-300 mt-2">Em minutos!</p>
                 </div>
               </div>
@@ -253,7 +247,7 @@ export default function HomePage({ language }) {
       {/* ============ CONVERTER SECTION ============ */}
       <section className="container mx-auto px-4 max-w-6xl py-24">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-black mb-4 text-gray-900">Conversor Premium</h2>
+          <h2 className="text-5xl font-black mb-4 text-gray-900">Conversor de Moedas</h2>
           <p className="text-lg text-gray-600">Veja exatamente quanto você vai receber antes de confirmar</p>
         </div>
 
@@ -263,7 +257,7 @@ export default function HomePage({ language }) {
             <CardDescription className="text-blue-100 mt-2 text-base">Taxa de câmbio atualizada em tempo real</CardDescription>
           </CardHeader>
           
-          <CardContent className="p-10 space-y-8">
+          <CardContent className="p-10 space-y-8 bg-gradient-to-b from-white to-gray-50">
             {error && (
               <div className="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-start gap-3 animate-shake">
                 <span className="text-red-600 font-black text-xl">!</span>
@@ -279,83 +273,126 @@ export default function HomePage({ language }) {
                 onChange={e => setAmount(e.target.value)}
                 type="number"
                 placeholder="1000"
-                className="text-3xl py-7 border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 rounded-lg font-black text-gray-900 placeholder-gray-400"
+                className="text-3xl py-7 border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 rounded-lg font-black text-gray-900 placeholder-gray-400 bg-white"
               />
             </div>
 
-            {/* Currency Selectors */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-              <div className="space-y-3">
-                <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">De</label>
-                <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                  <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-lg font-black text-gray-900 text-base">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currencies.map(curr => (
-                      <SelectItem key={curr.code} value={curr.code} className="font-semibold">
-                        {curr.flag} {curr.code} - {curr.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Currency Selectors - PREMIUM */}
+            <div className="bg-white rounded-2xl p-8 border-2 border-gray-200 space-y-8 shadow-md">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                {/* FROM Currency */}
+                <div className="space-y-4">
+                  <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">De (Origem)</label>
+                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                    <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-xl font-black text-gray-900 text-base bg-white hover:border-blue-400 transition-all">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      {currencies.map(curr => (
+                        <SelectItem key={curr.code} value={curr.code} className="font-semibold py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">{curr.flag}</span>
+                            <div>
+                              <p className="font-black">{curr.code}</p>
+                              <p className="text-xs text-gray-600">{curr.country}</p>
+                            </div>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fromCurrencyData && (
+                    <div className={`bg-gradient-to-br ${fromCurrencyData.bg} text-white rounded-xl p-4 text-center shadow-lg transform hover:scale-105 transition-transform`}>
+                      <p className="text-5xl mb-2">{fromCurrencyData.flag}</p>
+                      <p className="font-black text-lg">{fromCurrencyData.code}</p>
+                      <p className="text-sm text-white/80">{fromCurrencyData.country}</p>
+                    </div>
+                  )}
+                </div>
 
-              <div className="flex justify-center">
-                <button
-                  onClick={handleSwapCurrencies}
-                  className="p-4 bg-gradient-to-br from-blue-100 to-green-100 hover:from-blue-200 hover:to-green-200 text-blue-600 rounded-full transition-all duration-300 transform hover:scale-125 hover:rotate-180 shadow-lg font-bold"
-                >
-                  <ArrowLeftRight className="w-6 h-6" />
-                </button>
-              </div>
+                {/* SWAP Button */}
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleSwapCurrencies}
+                    className="p-4 bg-gradient-to-br from-blue-100 to-green-100 hover:from-blue-200 hover:to-green-200 text-blue-600 rounded-full transition-all duration-300 transform hover:scale-125 hover:rotate-180 shadow-lg font-bold border-2 border-blue-300"
+                  >
+                    <ArrowLeftRight className="w-6 h-6" />
+                  </button>
+                </div>
 
-              <div className="space-y-3">
-                <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">Para</label>
-                <Select value={toCurrency} onValueChange={setToCurrency}>
-                  <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-blue-600 rounded-lg font-black text-gray-900 text-base">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currencies.map(curr => (
-                      <SelectItem key={curr.code} value={curr.code} className="font-semibold">
-                        {curr.flag} {curr.code} - {curr.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {/* TO Currency */}
+                <div className="space-y-4">
+                  <label className="block text-sm font-black text-gray-800 uppercase tracking-wider">Para (Destino)</label>
+                  <Select value={toCurrency} onValueChange={setToCurrency}>
+                    <SelectTrigger className="py-6 border-2 border-gray-300 focus:border-green-600 rounded-xl font-black text-gray-900 text-base bg-white hover:border-green-400 transition-all">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      {currencies.map(curr => (
+                        <SelectItem key={curr.code} value={curr.code} className="font-semibold py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">{curr.flag}</span>
+                            <div>
+                              <p className="font-black">{curr.code}</p>
+                              <p className="text-xs text-gray-600">{curr.country}</p>
+                            </div>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {toCurrencyData && (
+                    <div className={`bg-gradient-to-br ${toCurrencyData.bg} text-white rounded-xl p-4 text-center shadow-lg transform hover:scale-105 transition-transform`}>
+                      <p className="text-5xl mb-2">{toCurrencyData.flag}</p>
+                      <p className="font-black text-lg">{toCurrencyData.code}</p>
+                      <p className="text-sm text-white/80">{toCurrencyData.country}</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Exchange Rate Display */}
-            <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 p-10 rounded-xl border-2 border-blue-200 space-y-6">
+            <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 p-10 rounded-2xl border-2 border-blue-200 space-y-6 shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-2 font-black uppercase">Taxa</p>
-                  <p className="text-4xl font-black text-blue-600">{exchangeRate.toFixed(4)}</p>
+                <div className="text-center bg-white rounded-xl p-6 shadow-md">
+                  <p className="text-sm text-gray-600 mb-2 font-black uppercase">Taxa de Câmbio</p>
+                  <p className="text-5xl font-black text-blue-600">{exchangeRate.toFixed(4)}</p>
+                  <p className="text-xs text-gray-500 mt-2">Atualizado em tempo real</p>
                 </div>
                 <div className="flex items-center justify-center">
-                  <div className="text-center">
-                    <Zap className="w-10 h-10 text-green-600 mx-auto mb-2 animate-pulse" />
-                    <p className="text-xs text-gray-500 font-bold">CONVERSÃO INSTANTÂNEA</p>
+                  <div className="text-center bg-white rounded-xl p-6 shadow-md">
+                    <Zap className="w-12 h-12 text-green-600 mx-auto mb-2 animate-pulse" />
+                    <p className="text-xs text-gray-600 font-bold">CONVERSÃO</p>
+                    <p className="text-xs text-gray-600 font-bold">INSTANTÂNEA</p>
                   </div>
                 </div>
-                <div className="text-center">
+                <div className="text-center bg-white rounded-xl p-6 shadow-md">
                   <p className="text-sm text-gray-600 mb-2 font-black uppercase">Você Receberá</p>
-                  <p className="text-4xl font-black text-green-600">{convertedAmount}</p>
+                  <p className="text-5xl font-black text-green-600">{convertedAmount}</p>
+                  <p className="text-xs text-gray-500 mt-2">{toCurrency}</p>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-500 border-t pt-4 font-semibold">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</p>
+              <p className="text-center text-xs text-gray-600 border-t pt-4 font-bold">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</p>
             </div>
 
             {/* Convert Button */}
             <Button 
               onClick={handleConvert} 
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 hover:from-blue-700 hover:via-blue-600 hover:to-green-600 text-white font-black py-8 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg disabled:opacity-50 uppercase tracking-wider"
+              className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 hover:from-blue-700 hover:via-blue-600 hover:to-green-600 text-white font-black py-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg disabled:opacity-50 uppercase tracking-wider border-0 transform hover:scale-105"
             >
-              {loading ? 'Processando...' : 'Iniciar Transação'}
-              {!loading && <ArrowRight className="ml-3 w-6 h-6" />}
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Zap className="w-6 h-6 animate-spin" />
+                  Processando...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  Iniciar Transação
+                  <ArrowRight className="w-6 h-6" />
+                </span>
+              )}
             </Button>
           </CardContent>
         </Card>
@@ -366,7 +403,7 @@ export default function HomePage({ language }) {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-black mb-6 text-gray-900">Por que Câmbio Express?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Tecnologia de ponta + atendimento humano = a melhor experiência de câmbio</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Especialista em câmbio para o Paraguai com as melhores taxas e atendimento premium</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -374,7 +411,7 @@ export default function HomePage({ language }) {
               { icon: Zap, title: 'Instantâneo', desc: 'Processamento em minutos, não em dias', color: 'from-yellow-400 to-orange-500' },
               { icon: TrendingUp, title: 'Melhores Taxas', desc: 'Algoritmo que compara o mercado em tempo real', color: 'from-green-400 to-emerald-500' },
               { icon: Shield, title: 'Segurança Total', desc: 'Criptografia de ponta a ponta', color: 'from-blue-400 to-cyan-500' },
-              { icon: Globe, title: 'Cobertura Global', desc: 'Mais de 150 países e múltiplas moedas', color: 'from-purple-400 to-pink-500' },
+              { icon: Globe, title: 'Foco em Paraguai', desc: 'Especialistas em câmbio para o Paraguai', color: 'from-purple-400 to-pink-500' },
               { icon: Smartphone, title: 'App Intuitivo', desc: 'Interface simples e poderosa', color: 'from-indigo-400 to-blue-500' },
               { icon: Users, title: 'Suporte 24/7', desc: 'Equipe dedicada sempre pronta para ajudar', color: 'from-red-400 to-pink-500' },
             ].map((feature, idx) => {
@@ -382,8 +419,6 @@ export default function HomePage({ language }) {
               return (
                 <div 
                   key={idx}
-                  onMouseEnter={() => setHoveredFeature(idx)}
-                  onMouseLeave={() => setHoveredFeature(null)}
                   className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-200 hover:scale-105 cursor-pointer"
                 >
                   <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-125 transition-transform shadow-lg`}>
@@ -402,7 +437,7 @@ export default function HomePage({ language }) {
       <section className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 py-24">
         <div className="container mx-auto px-4 max-w-4xl text-center text-white space-y-8">
           <h2 className="text-6xl font-black">Pronto para começar?</h2>
-          <p className="text-2xl text-white/90 font-semibold">Abra sua conta em 2 minutos e comece a enviar dinheiro hoje mesmo.</p>
+          <p className="text-2xl text-white/90 font-semibold">Abra sua conta em 2 minutos e comece a enviar dólares para o Paraguai hoje mesmo.</p>
           <Button 
             onClick={() => navigate('/register')}
             className="bg-white text-blue-600 hover:bg-gray-100 font-black py-7 px-12 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg inline-flex items-center gap-3 uppercase tracking-wider"
@@ -415,7 +450,6 @@ export default function HomePage({ language }) {
 
       <Footer />
 
-      {/* CSS Animations */}
       <style>{`
         @keyframes fade-in {
           from {
