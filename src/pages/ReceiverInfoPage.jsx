@@ -1,15 +1,16 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group' // Importando RadioGroup
 import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard, Banknote, Info, Zap, CreditCard as CreditCardIcon } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { cn } from '@/lib/utils' // Importando cn para classes condicionais
 
 export default function ReceiverInfoPage({ language }) {
   const navigate = useNavigate()
@@ -34,9 +35,6 @@ export default function ReceiverInfoPage({ language }) {
     // Dados de Pagamento (Simplificado)
     paymentMethod: 'pix', // pix ou credit_card
   })
-
-  // Gerar uma chave única para o Select
-  const selectKey = useMemo(() => Math.random().toString(36).substring(2, 9), [formData.accountType])
 
   // Buscar transação
   useEffect(() => {
@@ -381,23 +379,37 @@ export default function ReceiverInfoPage({ language }) {
                       <Label htmlFor="accountType" className="text-base font-semibold text-slate-700">
                         Tipo de Conta *
                       </Label>
-                      <Select 
-                        key={selectKey} // 👈 CORREÇÃO FINAL: Chave única para forçar a remontagem
-                        value={formData.accountType} 
+                      {/* SUBSTITUIÇÃO DO SELECT POR RADIO GROUP */}
+                      <RadioGroup
+                        value={formData.accountType}
                         onValueChange={(value) => handleInputChange('accountType', value)}
+                        className="flex space-x-4 mt-2"
                       >
-                        <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2 bg-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
-                          <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                        <div 
+                          className={cn(
+                            "flex items-center space-x-2 p-3 border-2 rounded-lg cursor-pointer transition-all",
+                            formData.accountType === 'checking' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
+                          )}
+                          onClick={() => handleInputChange('accountType', 'checking')}
+                        >
+                          <RadioGroupItem value="checking" id="checking" className="h-5 w-5" />
+                          <Label htmlFor="checking" className="text-base font-medium cursor-pointer">
                             Conta Corrente
-                          </SelectItem>
-                          <SelectItem value="savings" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
+                          </Label>
+                        </div>
+                        <div 
+                          className={cn(
+                            "flex items-center space-x-2 p-3 border-2 rounded-lg cursor-pointer transition-all",
+                            formData.accountType === 'savings' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
+                          )}
+                          onClick={() => handleInputChange('accountType', 'savings')}
+                        >
+                          <RadioGroupItem value="savings" id="savings" className="h-5 w-5" />
+                          <Label htmlFor="savings" className="text-base font-medium cursor-pointer">
                             Conta Poupança
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                          </Label>
+                        </div>
+                      </RadioGroup>
                     </div>
 
                     <div>
