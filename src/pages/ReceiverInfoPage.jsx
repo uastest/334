@@ -383,6 +383,7 @@ export default function ReceiverInfoPage({ language }) {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent position="popper" className="bg-white border-2 border-slate-200 shadow-xl">
+                          <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
                             Conta Corrente
                           </SelectItem>
                           <SelectItem value="savings" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
