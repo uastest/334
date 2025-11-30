@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard, Banknote, Info } from 'lucide-react'
+import { ArrowLeft, TrendingUp, Clock, AlertCircle, Building2, User, Mail, Phone, CreditCard, Banknote, Info, Zap, CreditCard as CreditCardIcon } from 'lucide-react'
 import { getTranslation } from '../utils/translations'
 import { useAuth } from '../hooks/use-auth'
 import { db } from '../firebase'
@@ -22,13 +22,17 @@ export default function ReceiverInfoPage({ language }) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
   const [formData, setFormData] = useState({
+    // Dados do Recebedor (Titular)
     receiverFullName: '',
     receiverEmail: '',
     receiverPhone: '',
+    // Dados Bancários
     bankName: '',
     accountType: 'checking', // Conta Corrente ou Poupança
     accountNumber: '',
     routingNumber: '', // Agência
+    // Dados de Pagamento (Simplificado)
+    paymentMethod: 'pix', // pix ou credit_card
   })
 
   // Buscar transação
@@ -80,6 +84,7 @@ export default function ReceiverInfoPage({ language }) {
   }
 
   const validateForm = () => {
+    // Validação de Dados do Recebedor e Bancários (Mantida)
     if (!formData.receiverFullName.trim()) {
       setError('O nome completo do beneficiário é obrigatório.')
       return false
@@ -111,6 +116,12 @@ export default function ReceiverInfoPage({ language }) {
       return false
     }
 
+    // Validação de Método de Pagamento (Apenas se foi selecionado)
+    if (!formData.paymentMethod) {
+      setError('Selecione um método de pagamento (Pix ou Cartão).')
+      return false
+    }
+
     return true
   }
 
@@ -126,6 +137,12 @@ export default function ReceiverInfoPage({ language }) {
 
     try {
       const docRef = doc(db, 'transactions', transactionId)
+      
+      // Apenas o método de pagamento é persistido
+      const paymentInfo = {
+        method: formData.paymentMethod,
+      }
+
       await updateDoc(docRef, {
         receiverInfo: {
           fullName: formData.receiverFullName,
@@ -137,16 +154,16 @@ export default function ReceiverInfoPage({ language }) {
           accountType: formData.accountType,
           accountNumber: formData.accountNumber,
           routingNumber: formData.routingNumber,
-          // Campos internacionais removidos
         },
-        status: 'pending_whatsapp_verification',
+        paymentInfo: paymentInfo, // Apenas o método é salvo
+        status: 'pending_payment_details', // Novo status para indicar que o método foi escolhido
         updatedAt: new Date().toISOString(),
       })
 
-      // Redirecionar para verificação de WhatsApp
-      navigate(`/whatsapp-verify/${transactionId}`)
+      // Redirecionar para a próxima etapa (onde os detalhes de pagamento serão tratados)
+      navigate(`/payment-details/${transactionId}`)
     } catch (err) {
-      console.error('Erro ao salvar informações do beneficiário:', err)
+      console.error('Erro ao salvar informações:', err)
       setError('Erro ao salvar as informações. Por favor, verifique os dados e tente novamente.')
     } finally {
       setSubmitting(false)
@@ -218,9 +235,9 @@ export default function ReceiverInfoPage({ language }) {
           {/* Page Title */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold mb-3 text-slate-800">
-              Dados para Recebimento Internacional
+              Finalizar Transação de Câmbio
             </h1>
-            <p className="text-slate-600 text-lg">Preencha as informações da sua conta bancária para receber o valor da transação de câmbio.</p>
+            <p className="text-slate-600 text-lg">Preencha os dados de recebimento e escolha como você irá pagar o valor enviado.</p>
           </div>
 
           {/* Titularity Warning */}
@@ -256,9 +273,9 @@ export default function ReceiverInfoPage({ language }) {
             <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 border-b-2 border-slate-100 rounded-t-xl">
               <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-800">
                 <Banknote className="w-7 h-7 text-blue-600" />
-                Informações da Sua Conta Bancária
+                Dados de Recebimento e Pagamento
               </CardTitle>
-              <CardDescription className="text-base text-slate-600">Preencha todos os campos obrigatórios para o recebimento da transferência.</CardDescription>
+              <CardDescription className="text-base text-slate-600">Preencha todos os campos obrigatórios para finalizar a transação.</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -269,7 +286,7 @@ export default function ReceiverInfoPage({ language }) {
                   </div>
                 )}
 
-                {/* Beneficiary Info Section (Now User's Info) */}
+                {/* Beneficiary Info Section (User's Info) */}
                 <div className="space-y-5 pb-6 border-b-2 border-slate-200">
                   <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
                     <User className="w-5 h-5 text-blue-600" />
@@ -331,8 +348,8 @@ export default function ReceiverInfoPage({ language }) {
                   </div>
                 </div>
 
-                {/* Bank Info Section (Simplified for National Transfer) */}
-                <div className="space-y-5">
+                {/* Bank Info Section (Recebimento) */}
+                <div className="space-y-5 pb-6 border-b-2 border-slate-200">
                   <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
                     <Building2 className="w-5 h-5 text-green-600" />
                     Dados Bancários para Recebimento
@@ -365,8 +382,7 @@ export default function ReceiverInfoPage({ language }) {
                         <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2 bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        {/* CORREÇÃO APLICADA: Adicionado position="popper" para tentar evitar o salto de scroll */}
-                        <SelectContent position="popper" className="bg-white border-2 border-slate-200 shadow-xl">
+                        <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
                           <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
                             Conta Corrente
                           </SelectItem>
@@ -415,6 +431,37 @@ export default function ReceiverInfoPage({ language }) {
                   </div>
                 </div>
 
+                {/* Payment Method Section (Simplificado) */}
+                <div className="space-y-5">
+                  <h3 className="font-bold text-xl flex items-center gap-2 text-slate-800">
+                    <Zap className="w-5 h-5 text-blue-600" />
+                    Método de Pagamento (Você Envia)
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      type="button"
+                      variant={formData.paymentMethod === 'pix' ? 'default' : 'outline'}
+                      className={`h-14 text-lg font-semibold transition-all ${formData.paymentMethod === 'pix' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
+                      onClick={() => handleInputChange('paymentMethod', 'pix')}
+                    >
+                      <Zap className="w-5 h-5 mr-2" /> Pix
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={formData.paymentMethod === 'credit_card' ? 'default' : 'outline'}
+                      className={`h-14 text-lg font-semibold transition-all ${formData.paymentMethod === 'credit_card' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
+                      onClick={() => handleInputChange('paymentMethod', 'credit_card')}
+                    >
+                      <CreditCardIcon className="w-5 h-5 mr-2" /> Cartão de Crédito
+                    </Button>
+                  </div>
+                  
+                  <p className="text-sm text-slate-600 pt-2">
+                    Ao continuar, você será direcionado para a próxima etapa onde os detalhes do pagamento (QR Code Pix ou Gateway de Cartão) serão processados.
+                  </p>
+                </div>
+
                 {/* Submit Button */}
                 <Button
                   type="submit"
@@ -427,7 +474,7 @@ export default function ReceiverInfoPage({ language }) {
                       Salvando e Prosseguindo...
                     </span>
                   ) : (
-                    'Continuar para Verificação de Segurança'
+                    'Continuar para Pagamento'
                   )}
                 </Button>
               </form>
