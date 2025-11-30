@@ -382,7 +382,7 @@ export default function ReceiverInfoPage({ language }) {
                         <SelectTrigger id="accountType" className="mt-2 h-12 text-base border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-2 bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-white border-2 border-slate-200 shadow-xl">
+                        <SelectContent position="popper" className="bg-white border-2 border-slate-200 shadow-xl">
                           <SelectItem value="checking" className="text-base py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-100">
                             Conta Corrente
                           </SelectItem>
