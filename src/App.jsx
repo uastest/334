@@ -4,8 +4,9 @@ import './App.css'
 import { AuthProvider } from './hooks/use-auth'
 
 // 🌐 Componentes
+import ScrollToTop from './components/ScrollToTop'
 import LanguageModal from './components/LanguageModal'
-import ScrollToTop from './components/ScrollToTop' // 👈 Importação do ScrollToTop
+
 
 // 🏠 Páginas
 import HomePage from './pages/HomePage'
@@ -48,8 +49,7 @@ function App() {
   return (
     <AuthProvider>
     <Router>
-      {/* 👈 SOLUÇÃO FINAL: ScrollToTop deve estar aqui */}
-      <ScrollToTop /> 
+      <ScrollToTop />
 
       {/* Modal de idioma */}
       <LanguageModal
