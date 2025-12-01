@@ -34,7 +34,7 @@ export default function VerifyPage({ language }) {
 
   const maxAttempts = 5;
 
-  // useLayoutEffect removido para evitar conflito de scroll
+  // useLayoutEffect de scroll removido
 
   // --- FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
   useEffect(() => {
@@ -182,7 +182,8 @@ export default function VerifyPage({ language }) {
         });
       }
 
-      navigate('/cadastro-pendente');
+      // REDIRECIONAMENTO DINÂMICO
+      navigate(`/cadastro-pendente-${token}`);
 
     } catch (e) {
       console.error("Erro ao verificar token:", e);
