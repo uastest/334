@@ -34,10 +34,7 @@ export default function VerifyPage({ language }) {
 
   const maxAttempts = 5;
 
-  // Correção de Scroll: Garante que o scroll vá para o topo na montagem
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useLayoutEffect removido para evitar conflito de scroll
 
   // --- FUNÇÕES DE BACKEND MANTIDAS INTACTAS ---
   useEffect(() => {
@@ -250,7 +247,7 @@ export default function VerifyPage({ language }) {
               {/* Bloco de Informação do Usuário */}
               <div className="flex items-center justify-center p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <Label className="text-lg font-medium text-blue-800">
-                  Número a ser verificado: <span className="font-bold">{user.phone}</span>
+                  Número a ser verificado: <span className="font-bold">{user?.phone}</span>
                 </Label>
               </div>
 
