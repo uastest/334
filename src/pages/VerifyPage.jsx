@@ -205,7 +205,7 @@ export default function VerifyPage({ language }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" translate="no">
 
       {/* Header com design mais limpo e moderno */}
       <header className="border-b border-gray-200 bg-white shadow-sm">
