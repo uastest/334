@@ -37,16 +37,16 @@ import CadastroPendente7658 from './pages/CadastroPendente7658'
 import CadastroPendente7659 from './pages/CadastroPendente7659'
 
 /* PayToPix (0189–0198) */
-import PayToPix0189 from './pages/PayToPix0189'
-import PayToPix0190 from './pages/PayToPix0190'
-import PayToPix0191 from './pages/PayToPix0191'
-import PayToPix0192 from './pages/PayToPix0192'
-import PayToPix0193 from './pages/PayToPix0193'
-import PayToPix0194 from './pages/PayToPix0194'
-import PayToPix0195 from './pages/PayToPix0195'
-import PayToPix0196 from './pages/PayToPix0196'
-import PayToPix0197 from './pages/PayToPix0197'
-import PayToPix0198 from './pages/PayToPix0198'
+import payToPix0189 from './pages/payToPix0189'
+import payToPix0190 from './pages/payToPix0190'
+import payToPix0191 from './pages/payToPix0191'
+import payToPix0192 from './pages/payToPix0192'
+import payToPix0193 from './pages/payToPix0193'
+import payToPix0194 from './pages/payToPix0194'
+import payToPix0195 from './pages/payToPix0195'
+import payToPix0196 from './pages/payToPix0196'
+import payToPix0197 from './pages/payToPix0197'
+import payToPix0198 from './pages/payToPix0198'
 
 function App() {
   const [showLanguageModal, setShowLanguageModal] = useState(false)
@@ -112,16 +112,16 @@ function App() {
           <Route path="/cadastro-pendente-7659" element={<CadastroPendente7659 language={selectedLanguage} />} />
 
           {/* PayToPix 0189–0198 */}
-          <Route path="/pay-to-pix-0189" element={<PayToPix0189 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0190" element={<PayToPix0190 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0191" element={<PayToPix0191 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0192" element={<PayToPix0192 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0193" element={<PayToPix0193 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0194" element={<PayToPix0194 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0195" element={<PayToPix0195 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0196" element={<PayToPix0196 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0197" element={<PayToPix0197 language={selectedLanguage} />} />
-          <Route path="/pay-to-pix-0198" element={<PayToPix0198 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0189" element={<payToPix0189 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0190" element={<payToPix0190 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0191" element={<payToPix0191 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0192" element={<payToPix0192 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0193" element={<payToPix0193 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0194" element={<payToPix0194 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0195" element={<payToPix0195 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0196" element={<payToPix0196 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0197" element={<payToPix0197 language={selectedLanguage} />} />
+          <Route path="/pay-to-pix-0198" element={<payToPix0198 language={selectedLanguage} />} />
         </Routes>
       </Router>
     </AuthProvider>
