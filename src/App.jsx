@@ -25,7 +25,7 @@ import DashboardPage from './pages/DashboardPage'
 import ReceiverInfoPage from './pages/ReceiverInfoPage'
 import WhatsAppVerifyPage from './pages/WhatsAppVerifyPage'
 
-// 🆕 Páginas CADASTRO-PENDENTE
+// 🆕 Páginas CADASTRO-PENDENTE 
 import cadastroPendente7650 from './pages/cadastro-pendente-7650'
 import cadastroPendente7651 from './pages/cadastro-pendente-7651'
 import cadastroPendente7652 from './pages/cadastro-pendente-7652'
