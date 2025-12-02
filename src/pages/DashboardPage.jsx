@@ -347,7 +347,7 @@ export default function DashboardPage({ language }) {
                 </div>
                 <div className="flex gap-3 items-start">
                   <span className="font-bold bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">4</span>
-                  <p>Escolha o método de pagamento</p>
+                  <p>Efetue o pagamento</p>
                 </div>
               </CardContent>
             </Card>
