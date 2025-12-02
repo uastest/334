@@ -202,7 +202,7 @@ export default function HomePage({ language }) {
                   <p className="text-blue-300 text-sm">Usuários Ativos</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-black text-green-400">$<AnimatedNumber value={=150} />k+</p>
+                  <p className="text-3xl font-black text-green-400">$<AnimatedNumber value={150} />k+</p>
                   <p className="text-blue-300 text-sm">Transações</p>
                 </div>
                 <div>
