@@ -111,11 +111,14 @@ export default function ReceiverInfoPage({ language }) {
       return false
     }
 
-    // Validação de titularidade (nome do recebedor deve ser o mesmo do usuário logado)
-    if (user.displayName && formData.receiverFullName.trim().toLowerCase() !== user.displayName.trim().toLowerCase()) {
-      setError('A conta de recebimento deve estar OBRIGATORIAMENTE no mesmo nome do seu cadastro: ' + user.displayName)
-      return false
-    }
+   // Validação de titularidade (nome do recebedor deve ser o mesmo do usuário logado)
+if (
+  user.displayName &&
+  formData.receiverFullName.trim().toLowerCase() !== user.displayName.trim().toLowerCase()
+) {
+  setError('A conta de recebimento deve estar OBRIGATORIAMENTE no mesmo nome do cadastro.'); 
+  return false;
+}
 
     // Validação de Método de Pagamento (Apenas se foi selecionado)
     if (!formData.paymentMethod) {
