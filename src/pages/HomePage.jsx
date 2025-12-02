@@ -198,15 +198,15 @@ export default function HomePage({ language }) {
 
               <div className="grid grid-cols-3 gap-4 pt-12 border-t border-blue-500/20">
                 <div>
-                  <p className="text-3xl font-black text-green-400"><AnimatedNumber value={50} />K+</p>
+                  <p className="text-3xl font-black text-green-400"><AnimatedNumber value={5} />K+</p>
                   <p className="text-blue-300 text-sm">Usuários Ativos</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-black text-green-400">$<AnimatedNumber value={2} />B+</p>
+                  <p className="text-3xl font-black text-green-400">$<AnimatedNumber value={=150} />k+</p>
                   <p className="text-blue-300 text-sm">Transações</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-black text-green-400"><AnimatedNumber value={150} />+</p>
+                  <p className="text-3xl font-black text-green-400"><AnimatedNumber value={12} />+</p>
                   <p className="text-blue-300 text-sm">Países</p>
                 </div>
               </div>
@@ -366,12 +366,12 @@ export default function HomePage({ language }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { icon: Zap, title: 'Instantâneo', desc: 'Processamento em minutos, não em dias', color: 'from-yellow-400 to-orange-500' },
-              { icon: TrendingUp, title: 'Melhores Taxas', desc: 'Algoritmo que compara o mercado em tempo real', color: 'from-green-400 to-emerald-500' },
-              { icon: Shield, title: 'Segurança Total', desc: 'Criptografia de ponta a ponta', color: 'from-blue-400 to-cyan-500' },
-              { icon: Globe, title: 'Foco em Paraguai', desc: 'Especialistas em câmbio para o Paraguai', color: 'from-purple-400 to-pink-500' },
-              { icon: Smartphone, title: 'App Intuitivo', desc: 'Interface simples e poderosa', color: 'from-indigo-400 to-blue-500' },
-              { icon: Users, title: 'Suporte 24/7', desc: 'Equipe dedicada sempre pronta para ajudar', color: 'from-red-400 to-pink-500' },
+              { icon: Zap, title: 'Rapidez', desc: 'Transações internacionais entre países do bloco sul-americano costumam levar de 1 a 3 dias úteis. Nossa casa de câmbio, porém, realiza o processo normalmente no prazo MÍNIMO (1 DIA ÚTIL), utilizando depósitos diretos. O tempo final pode variar conforme o processamento do seu banco.', color: 'from-yellow-400 to-orange-500' },
+              { icon: TrendingUp, title: 'Melhores Taxas', desc: 'Utilizamos a cotação do dólar do mercado atual, aplicando uma taxa de serviço de apenas 0,4%, entre as mais competitivas do mercado', color: 'from-green-400 to-emerald-500' },
+              { icon: Shield, title: 'Segurança Total', desc: 'Estamos há 9 anos atuando no câmbio com sede no Paraguai e mais de 4 anos operando online. Utilizamos a Nox Pay como intermediadora de pagamento — uma das plataformas mais sólidas do mercado para operações fiduciárias vindas do Brasil — e contamos com a infraestrutura do Firebase (Google) para armazenamento dos dados, garantindo estabilidade e confiabilidade em todo o processo', color: 'from-blue-400 to-cyan-500' },
+              { icon: Globe, title: 'Foco em Paraguai', desc: 'Somos especializados em câmbio para o Paraguai, um dos destinos favoritos dos brasileiros que vêm às compras em Pedro Juan Caballero. Nossa casa de câmbio é voltada principalmente para esse público, oferecendo dólar para quem deseja realizar suas compras no Paraguai com praticidade e confiança', color: 'from-purple-400 to-pink-500' },
+              { icon: Smartphone, title: 'App Intuitivo', desc: 'Nossa plataforma foi desenvolvida para ser prática e intuitiva, permitindo que qualquer pessoa utilize o site com facilidade desde o primeiro acesso. A navegação é clara, rápida e organizada, garantindo uma experiência fluida em todas as etapas da transação. ', color: 'from-indigo-400 to-blue-500' },
+              { icon: Users, title: 'Suporte 24/7', desc: 'Nosso suporte permanece disponível 24 horas por dia, pronto para atender com agilidade e esclarecer qualquer dúvida. Você conta com uma equipe dedicada, sempre preparada para ajudar em cada etapa da sua transação ', color: 'from-red-400 to-pink-500' },
             ].map((feature, idx) => {
               const Icon = feature.icon
               return (
