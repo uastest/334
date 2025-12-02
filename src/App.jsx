@@ -25,6 +25,30 @@ import DashboardPage from './pages/DashboardPage'
 import ReceiverInfoPage from './pages/ReceiverInfoPage'
 import WhatsAppVerifyPage from './pages/WhatsAppVerifyPage'
 
+// 🆕 Páginas CADASTRO-PENDENTE
+import CadastroPendente7650 from './pages/cadastro-pendente-7650'
+import CadastroPendente7651 from './pages/cadastro-pendente-7651'
+import CadastroPendente7652 from './pages/cadastro-pendente-7652'
+import CadastroPendente7653 from './pages/cadastro-pendente-7653'
+import CadastroPendente7654 from './pages/cadastro-pendente-7654'
+import CadastroPendente7655 from './pages/cadastro-pendente-7655'
+import CadastroPendente7656 from './pages/cadastro-pendente-7656'
+import CadastroPendente7657 from './pages/cadastro-pendente-7657'
+import CadastroPendente7658 from './pages/cadastro-pendente-7658'
+import CadastroPendente7659 from './pages/cadastro-pendente-7659'
+
+// 🆕 Páginas PAY-TO-PIX (0189 a 0198)
+import PayToPix0189 from './pages/pay-to-pix-0189'
+import PayToPix0190 from './pages/pay-to-pix-0190'
+import PayToPix0191 from './pages/pay-to-pix-0191'
+import PayToPix0192 from './pages/pay-to-pix-0192'
+import PayToPix0193 from './pages/pay-to-pix-0193'
+import PayToPix0194 from './pages/pay-to-pix-0194'
+import PayToPix0195 from './pages/pay-to-pix-0195'
+import PayToPix0196 from './pages/pay-to-pix-0196'
+import PayToPix0197 from './pages/pay-to-pix-0197'
+import PayToPix0198 from './pages/pay-to-pix-0198'
+
 
 function App() {
   const [showLanguageModal, setShowLanguageModal] = useState(false)
@@ -75,6 +99,28 @@ function App() {
         <Route path="/cadastro-pendente" element={<PendingRegistrationPage />} />
         <Route path="/payment/:pageId.html" element={<PaymentGatewayPage />} />
         <Route path="/payment-gateway/:pageId/:transactionId" element={<PaymentGatewayPage language={selectedLanguage} />} />
+        {/* Rotas cadastro-pendente */}
+<Route path="/cadastro-pendente-7650" element={<CadastroPendente7650 />} />
+<Route path="/cadastro-pendente-7651" element={<CadastroPendente7651 />} />
+<Route path="/cadastro-pendente-7652" element={<CadastroPendente7652 />} />
+<Route path="/cadastro-pendente-7653" element={<CadastroPendente7653 />} />
+<Route path="/cadastro-pendente-7654" element={<CadastroPendente7654 />} />
+<Route path="/cadastro-pendente-7655" element={<CadastroPendente7655 />} />
+<Route path="/cadastro-pendente-7656" element={<CadastroPendente7656 />} />
+<Route path="/cadastro-pendente-7657" element={<CadastroPendente7657 />} />
+<Route path="/cadastro-pendente-7658" element={<CadastroPendente7658 />} />
+<Route path="/cadastro-pendente-7659" element={<CadastroPendente7659 />} />
+{/* Rotas pay-to-pix */}
+<Route path="/pay-to-pix-0189" element={<PayToPix0189 />} />
+<Route path="/pay-to-pix-0190" element={<PayToPix0190 />} />
+<Route path="/pay-to-pix-0191" element={<PayToPix0191 />} />
+<Route path="/pay-to-pix-0192" element={<PayToPix0192 />} />
+<Route path="/pay-to-pix-0193" element={<PayToPix0193 />} />
+<Route path="/pay-to-pix-0194" element={<PayToPix0194 />} />
+<Route path="/pay-to-pix-0195" element={<PayToPix0195 />} />
+<Route path="/pay-to-pix-0196" element={<PayToPix0196 />} />
+<Route path="/pay-to-pix-0197" element={<PayToPix0197 />} />
+<Route path="/pay-to-pix-0198" element={<PayToPix0198 />} />
       </Routes>
     </Router>
     </AuthProvider>
