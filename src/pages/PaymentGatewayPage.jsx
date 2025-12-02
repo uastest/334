@@ -41,14 +41,11 @@ export default function PaymentGatewayPage({ language }) {
 
   // Gerar código PIX
   useEffect(() => {
-    if (paymentMethod === 'pix') {
-      const generatePixCode = () => {
-        const code = `00020126580014br.gov.bcb.pix0136${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}520400005303986540510.005802BR5925NOME DO TITULAR DA CONTA6008BRASILIA62070503***6304C74A`
-        setPixCode(code)
-      }
-      generatePixCode()
-    }
-  }, [paymentMethod])
+  if (paymentMethod === 'pix') {
+    setPixCode("SEU_CODIGO_PIX_FIXO_AQUI")
+  }
+}, [paymentMethod])
+
 
   // Buscar transação se houver transactionId
   useEffect(() => {
