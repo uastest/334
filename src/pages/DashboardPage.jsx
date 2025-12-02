@@ -198,7 +198,7 @@ export default function DashboardPage({ language }) {
       <section className="container mx-auto px-4 py-12 max-w-7xl">
         <div className="mb-10">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-2">Bem-vindo, {user?.email.split('@')[0]}!</h1>
-          <p className="text-lg text-gray-600">Seu painel de controle para conversões de moeda rápidas e seguras.</p>
+          <p className="text-lg text-gray-600">O jeito mais rápido e prático de fazer suas conversões de moeda.</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -314,15 +314,15 @@ export default function DashboardPage({ language }) {
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center border-b pb-2">
                   <span className="text-gray-600">Transações Concluídas:</span>
-                  <span className="font-bold text-lg text-gray-900">12</span> {/* Dados simulados */}
+                  <span className="font-bold text-lg text-gray-900">0</span> {/* Dados simulados */}
                 </div>
                 <div className="flex justify-between items-center border-b pb-2">
                   <span className="text-gray-600">Total Enviado (USD):</span>
-                  <span className="font-bold text-lg text-green-600">$ 15,450.00</span> {/* Dados simulados */}
+                  <span className="font-bold text-lg text-green-600">$ 0,00</span> {/* Dados simulados */}
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Última Transação:</span>
-                  <span className="font-medium text-sm text-gray-900">2 dias atrás</span> {/* Dados simulados */}
+                  <span className="font-medium text-sm text-gray-900">Você ainda não realizou transações.</span> {/* Dados simulados */}
                 </div>
               </CardContent>
             </Card>
