@@ -33,10 +33,9 @@ export default function WhatsAppVerifyPage() {
     const index = VALID_CODES.indexOf(code);
     if (index !== -1) {
       const pageNumber = 189 + index;
-      // Garante que o nome da página comece com 'P' maiúsculo, como solicitado
       return `Pay-to-Pix-${String(pageNumber).padStart(4, '0')}`;
     }
-    return null; // Retorna nulo se o código for inválido
+    return null;
   };
 
   // Busca os dados da transação apenas para exibir o resumo na tela
@@ -75,29 +74,29 @@ export default function WhatsAppVerifyPage() {
 
     const code = verificationCode.trim();
 
-    // 1. Valida o formato do código
     if (code.length !== 6) {
       setError('Por favor, insira o código de 6 dígitos.');
       setSubmitting(false);
       return;
     }
 
-    // 2. Procura o nome da página correspondente ao código
     const paymentPageName = getPaymentPageName(code);
 
-    // 3. Se o código for inválido, mostra um erro
     if (!paymentPageName) {
       setError('Código de verificação inválido. Tente novamente.');
       setSubmitting(false);
       return;
     }
 
-    // 4. Se o código for válido, redireciona para a URL correta
-    // Exemplo de URL: /Pay-to-Pix-0189/ID_DA_TRANSACAO
-    navigate(`/${paymentPageName}/${transactionId}`);
+    // ==================================================================
+    // **CORREÇÃO PRINCIPAL APLICADA AQUI**
+    // O redirecionamento agora é feito SEM o transactionId no final.
+    // Exemplo de URL: /Pay-to-Pix-0189
+    // ==================================================================
+    navigate(`/${paymentPageName}`);
   };
 
-  // --- Renderização do Componente (Layout e Design Idênticos) ---
+  // --- O restante do componente permanece exatamente igual ---
 
   if (authLoading || loading) {
     return (
