@@ -28,8 +28,7 @@ export default function Home() {
   const handleVerification = () => {
     setIsVerifying(true);
     window.open(
-      "https://validar.id/ticket/?h=NjkyYWViNDBhYTI3NDQ2NTZmYWRhZjQ3LlRpOHZUVWRUUjI1TksxaHNhSEpCU1dGRVlYZzVOVTUyVVhWeVIzcHFWMlpwVWxGV05TczRWa1pqVlRBMU4yZHphRVpLTDBkNlZtNVhaMGhyVjBSYVUwUTVZMmxRZGpaU1RrRnhlV050U25Wdk9UUmlObVZtUjBwU2FWVmxkWFpxYTNGb2NtMVBRM1ZPTkZCMFVtaHVlVTF0V2xFMFkzRTBlR05FWW1ZNU56aG1aRzVRSzB0RFluQjZPVlZwWkRGVldYQjBUeTlIT1ZkRVdVbHhUbGRSZVhSMmFIbGpORFYxTlc0d1BRPT0=",
-      "_blank"
+      "https://www.youtube.com/watch?v=UX6-hMRPmXs"
     );
     setTimeout(() => setIsVerifying(false), 2000);
   };
