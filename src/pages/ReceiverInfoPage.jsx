@@ -248,8 +248,8 @@ if (
           <div className="bg-yellow-50 border-2 border-yellow-300 text-yellow-800 px-4 py-3 rounded-xl text-base flex gap-3 items-start shadow-sm mb-8">
             <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-yellow-600" />
             <span className="font-medium">
-              **ATENÇÃO:** A conta de recebimento deve estar **OBRIGATORIAMENTE** no mesmo nome do seu cadastro: **{user.displayName || 'Não Informado'}**.
-            </span>
+              **ATENÇÃO:** A conta de recebimento deve estar **OBRIGATORIAMENTE** no mesmo nome do seu cadastro.
+          </span>
           </div>
 
           {/* Transaction Summary Card */}
