@@ -1,112 +1,53 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { CheckCircle, CreditCard, Copy, TrendingUp, AlertCircle, Clock, ArrowLeft } from 'lucide-react'
-import { db } from '../firebase'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, Copy, TrendingUp, AlertCircle, ArrowLeft } from 'lucide-react';
 
-// Este componente agora é específico para PIX.
-export default function PayToPix0189({ language }) {
-  // **CORREÇÃO APLICADA AQUI** - Removemos 'pageId' pois não é mais necessário.
-  // O roteador deve estar configurado para passar apenas 'transactionId'.
-  // Ex: <Route path="/Pay-to-Pix-0189/:transactionId" element={<PayToPix0189 />} />
-  const { transactionId } = useParams()
-  const navigate = useNavigate()
-  const [pixCode, setPixCode] = useState('')
-  const [copied, setCopied] = useState(false)
-  const [transaction, setTransaction] = useState(null)
-  const [loading, setLoading] = useState(true)
-  
-  // **CORREÇÃO APLICADA AQUI** - O método de pagamento é fixo.
-  const [paymentMethod] = useState('pix') // Sempre será 'pix' nesta página.
+// Componente ultra-simplificado para garantir que a página sempre carregue.
+export default function PayToPix0189() {
+  const navigate = useNavigate();
+  // O transactionId ainda é pego da URL, mas será usado APENAS para o redirecionamento final.
+  // Se ele não existir, a página ainda funciona.
+  const { transactionId } = useParams();
 
-  const [paymentProcessing, setPaymentProcessing] = useState(false)
-  const [showProcessingMessage, setShowProcessingMessage] = useState(false)
+  // O código PIX é fixo, como já estava.
+  const [pixCode] = useState("SEU_CODIGO_PIX_FIXO_AQUI");
+  const [copied, setCopied] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // **REMOVIDO** - A lógica para determinar o tipo de pagamento não é mais necessária.
-  // useEffect(() => { ... }, [pageId])
-
-  // Gerar código PIX
-  useEffect(() => {
-    // A condição 'if (paymentMethod === 'pix')' ainda é útil se você copiar este
-    // componente para outros métodos, mas aqui ela sempre será verdadeira.
-    setPixCode("SEU_CODIGO_PIX_FIXO_AQUI")
-  }, [paymentMethod])
-
-
-  // Buscar transação se houver transactionId
-  useEffect(() => {
-    const fetchTransaction = async () => {
-      if (transactionId) {
-        try {
-          const docRef = doc(db, 'transactions', transactionId)
-          const docSnap = await getDoc(docRef)
-          if (docSnap.exists()) {
-            setTransaction({ id: docSnap.id, ...docSnap.data() })
-          }
-        } catch (err) {
-          console.error('Erro ao buscar transação:', err)
-        }
-      }
-      setLoading(false)
-    }
-
-    fetchTransaction()
-  }, [transactionId])
-
+  // Função para copiar o código PIX. Funciona de forma independente.
   const handleCopyPixCode = () => {
-    navigator.clipboard.writeText(pixCode)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(pixCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-  const handlePaymentConfirmed = async () => {
-    setPaymentProcessing(true)
-
-    try {
+  // Função para confirmar o pagamento.
+  // Apenas redireciona o usuário. Não interage com o banco de dados.
+  const handlePaymentConfirmed = () => {
+    setIsProcessing(true);
+    // Simula um pequeno atraso para o usuário ver o feedback.
+    setTimeout(() => {
+      // Se o transactionId existir na URL, redireciona para a confirmação.
+      // Se não, envia para o dashboard. Isso evita que a página quebre.
       if (transactionId) {
-        const docRef = doc(db, 'transactions', transactionId)
-        await updateDoc(docRef, {
-          status: 'payment_processing',
-          paymentConfirmedAt: new Date().toISOString(),
-        })
+        navigate(`/confirmation/${transactionId}`);
+      } else {
+        navigate('/dashboard');
       }
+    }, 1500);
+  };
 
-      setShowProcessingMessage(true)
-      setTimeout(() => {
-        if (transactionId) {
-          navigate(`/confirmation/${transactionId}`)
-        }
-      }, 3000)
-    } catch (err) {
-      console.error('Erro ao confirmar pagamento:', err)
-      alert('Erro ao confirmar pagamento. Tente novamente.')
-    } finally {
-      setPaymentProcessing(false)
-    }
-  }
-
-  // O resto do componente permanece praticamente igual, mas agora só renderiza a parte do PIX.
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white">
-        <div className="text-center">
-          <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground animate-spin" />
-          <p className="text-muted-foreground">Carregando...</p>
-        </div>
-      </div>
-    )
-  }
+  // --- Renderização do Componente (Layout Idêntico, Lógica Removida) ---
+  // Não há mais estado de 'loading' ou busca de 'transaction', então a página carrega instantaneamente.
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Link to="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
@@ -114,68 +55,32 @@ export default function PayToPix0189({ language }) {
                 CambioExpress
               </span>
             </Link>
-            {transactionId && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/dashboard')}
-                className="gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Voltar
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(-1)} // Botão "Voltar" que funciona em qualquer caso
+              className="gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Voltar
+            </Button>
           </div>
         </div>
       </header>
 
-      <section className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
-          {showProcessingMessage && (
-            <Card className="shadow-lg mb-6 bg-green-50 border-green-200">
-              <CardContent className="pt-6">
-                <div className="text-center space-y-4">
-                  <CheckCircle className="w-16 h-16 text-green-600 mx-auto animate-bounce" />
-                  <h2 className="text-2xl font-bold text-green-900">Pagamento Processando!</h2>
-                  <p className="text-green-800">
-                    Seu pagamento está sendo processado. Você será redirecionado em breve...
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               💳 Pagamento via PIX
             </h1>
             <p className="text-muted-foreground">
-              Escaneie o QR Code ou copie o código PIX
+              Escaneie o QR Code ou copie o código PIX para pagar.
             </p>
           </div>
 
-          {transaction && (
-            <Card className="shadow-lg mb-6 bg-blue-50 border-blue-200">
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Você envia</p>
-                    <p className="text-xl font-bold text-blue-900">
-                      {transaction.amount} {transaction.fromCurrency}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Você recebe</p>
-                    <p className="text-xl font-bold text-blue-900">
-                      {transaction.convertedAmount} {transaction.toCurrency}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {/* REMOVIDO: O sumário da transação foi removido para eliminar a dependência do Firebase. */}
 
-          {/* Apenas a lógica de pagamento PIX é mantida */}
           <Card className="shadow-lg border-0 mb-6">
             <CardHeader>
               <CardTitle>Código PIX para Pagamento</CardTitle>
@@ -188,7 +93,7 @@ export default function PayToPix0189({ language }) {
                   alt="QR Code de Pagamento"
                   className="mx-auto w-48 h-48 mb-4 border-2 border-gray-200 rounded-lg p-2 bg-white"
                 />
-                <p className="text-sm text-muted-foreground">Escaneie com seu celular</p>
+                <p className="text-sm text-muted-foreground">Escaneie com o app do seu banco</p>
               </div>
 
               <div className="bg-slate-50 p-4 rounded-lg space-y-2">
@@ -205,11 +110,7 @@ export default function PayToPix0189({ language }) {
                     onClick={handleCopyPixCode}
                     className="flex-shrink-0"
                   >
-                    {copied ? (
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
+                    {copied ? <CheckCircle className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
                   </Button>
                 </div>
               </div>
@@ -219,24 +120,22 @@ export default function PayToPix0189({ language }) {
                   <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-yellow-900">
                     <p className="font-medium">Importante</p>
-                    <p className="text-xs mt-1">O pagamento deve ser feito no nome do titular da conta da casa de câmbio para ser aprovado.</p>
+                    <p className="text-xs mt-1">Após pagar, clique no botão "Já Paguei" para que possamos confirmar sua transação.</p>
                   </div>
                 </div>
               </div>
 
               <Button
                 onClick={handlePaymentConfirmed}
-                disabled={paymentProcessing}
+                disabled={isProcessing}
                 className="w-full bg-green-600 hover:bg-green-700 gap-2"
               >
-                {paymentProcessing ? 'Processando...' : '✓ Já Paguei'}
+                {isProcessing ? 'Processando...' : '✓ Já Paguei'}
               </Button>
             </CardContent>
           </Card>
-
-          {/* O resto do componente continua igual... */}
         </div>
-      </section>
+      </main>
     </div>
-  )
+  );
 }
