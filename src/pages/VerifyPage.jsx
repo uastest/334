@@ -154,7 +154,7 @@ export default function VerifyPage({ language }) {
         });
       }
 
-      navigate(`/pending_verification_${redirectSuffix}`);
+      navigate(`/cadastro-pendente-${redirectSuffix}`);
 
     } catch (e) {
       console.error("Erro ao verificar token:", e);
