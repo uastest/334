@@ -187,7 +187,7 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
                       Clique para fazer upload
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">
-                      ou arraste a foto aqui
+                      ou arraste o arquivo aqui
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Máximo 5MB • JPEG ou PNG
