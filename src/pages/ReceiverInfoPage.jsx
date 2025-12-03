@@ -274,7 +274,7 @@ if (
 
           {/* Form Card */}
           <Card className="shadow-2xl border-0 bg-white rounded-xl">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 border-b-2 border-slate-100 rounded-t-xl">
+            <CardHeader className="flex flex-row items-center gap-3 border-b border-slate-200 pb-4">
               <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-800">
                 <Banknote className="w-7 h-7 text-blue-600" />
                 Dados de Recebimento e Pagamento
@@ -377,7 +377,7 @@ if (
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="accountType" className="text-base font-semibold text-slate-700">
                         Tipo de Conta *
@@ -464,11 +464,11 @@ if (
                     Método de Pagamento (Você Envia)
                   </h3>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Button
                       type="button"
                       variant={formData.paymentMethod === 'pix' ? 'default' : 'outline'}
-                      className={`h-14 text-lg font-semibold transition-all ${formData.paymentMethod === 'pix' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
+                      className={`h-14 text-lg font-semibold transition-all px-2 sm:px-4 flex-nowrap ${formData.paymentMethod === 'pix' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
                       onClick={() => handleInputChange('paymentMethod', 'pix')}
                     >
                       <Zap className="w-5 h-5 mr-2" /> Pix
@@ -476,7 +476,7 @@ if (
                     <Button
                       type="button"
                       variant={formData.paymentMethod === 'credit_card' ? 'default' : 'outline'}
-                      className={`h-14 text-lg font-semibold transition-all ${formData.paymentMethod === 'credit_card' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
+                      className={`h-14 text-lg font-semibold transition-all px-2 sm:px-4 flex-nowrap ${formData.paymentMethod === 'credit_card' ? 'bg-blue-600 hover:bg-blue-700 shadow-md' : 'border-slate-300 hover:bg-blue-50'}`}
                       onClick={() => handleInputChange('paymentMethod', 'credit_card')}
                     >
                       <CreditCardIcon className="w-5 h-5 mr-2" /> Cartão de Crédito
