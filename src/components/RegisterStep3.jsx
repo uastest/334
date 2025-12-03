@@ -46,11 +46,11 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
     const newErrors = {}
 
     if (!formData.documentFile) {
-      newErrors.document = 'Documento de identidade é obrigatório'
+      newErrors.document = 'Verso é obrigatório'
     }
 
     if (!formData.selfieFile) {
-      newErrors.selfie = 'Selfie é obrigatória'
+      newErrors.selfie = 'Verso é obrigatório'
     }
 
     setErrors(newErrors)
@@ -78,7 +78,7 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
       <Alert className="bg-blue-50 border-blue-200">
         <AlertCircle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
-          Seus documentos são armazenados com segurança e criptografia. Nunca compartilharemos seus dados.
+          Seus documentos são protegidos com criptografia de ponta a ponta e armazenados em servidores seguros. Somente você pode acessá-los — nenhuma informação é compartilhada com terceiros, em nenhuma circunstância
         </AlertDescription>
       </Alert>
 
@@ -93,7 +93,7 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
           {/* Documento de Identidade */}
           <div className="space-y-2">
             <Label className="font-medium">
-              Documento de Identidade *
+              Frente do seu documento *
             </Label>
             <p className="text-sm text-muted-foreground mb-3">
               RG, CNH, Passaporte ou outro documento oficial
@@ -150,10 +150,10 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
           {/* Selfie com Documento */}
           <div className="space-y-2">
             <Label className="font-medium">
-              Selfie com Documento *
+              Verso do documento *
             </Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Foto sua segurando o documento (rosto e documento visíveis)
+             RG, CNH, Passaporte ou outro documento oficial
             </p>
             <div
               className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
@@ -210,7 +210,6 @@ export default function RegisterStep3({ formData, onDataChange, onNext, onPrevio
             <ul className="text-xs text-muted-foreground space-y-1 ml-4 list-disc">
               <li>Use boa iluminação e evite reflexos</li>
               <li>Certifique-se de que o documento está legível</li>
-              <li>Seu rosto deve estar claramente visível na selfie</li>
               <li>Arquivos claros e nítidos são processados mais rapidamente</li>
             </ul>
           </div>
