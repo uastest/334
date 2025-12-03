@@ -223,7 +223,7 @@ export default function HomePage({ language }) {
                 >
                   <p className="text-blue-200 text-sm mb-3 font-semibold">Taxa Atual</p>
                   <p className="text-4xl font-black text-green-300">1 USD</p>
-                  <p className="text-2xl font-bold text-blue-300 mt-2">= 7,200 PYG</p>
+                  <p className="text-2xl font-bold text-blue-300 mt-2">= 5,37 BRL</p>
                 </div>
                 <div 
                   className="absolute w-80 h-48 bg-gradient-to-br from-green-500/30 to-blue-500/30 backdrop-blur-xl border border-green-400/50 rounded-2xl p-6 shadow-2xl top-32"
@@ -233,8 +233,8 @@ export default function HomePage({ language }) {
                   }}
                 >
                   <p className="text-green-200 text-sm mb-3 font-semibold">Você Receberá</p>
-                  <p className="text-4xl font-black text-blue-300">₲ 7.2M</p>
-                  <p className="text-sm text-green-300 mt-2">Em minutos!</p>
+                  <p className="text-4xl font-black text-blue-300">R$ 5,37</p>
+                  <p className="text-sm text-green-300 mt-2">Em 24 Horas!</p>
                 </div>
               </div>
             </div>
