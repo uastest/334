@@ -274,7 +274,7 @@ if (
 
           {/* Form Card */}
           <Card className="shadow-2xl border-0 bg-white rounded-xl">
-            <CardHeader className="flex flex-row items-center gap-3 border-b border-slate-200 pb-4">
+           <CardHeader className="flex flex-col space-y-1 border-b border-slate-200 pb-4">
               <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-800">
                 <Banknote className="w-7 h-7 text-blue-600" />
                 Dados de Recebimento e Pagamento
@@ -393,7 +393,7 @@ if (
                             "flex items-center space-x-2 p-3 border-2 rounded-lg cursor-pointer transition-all",
                             formData.accountType === 'checking' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
                           )}
-                          onClick={() => handleInputChange('accountType', 'checking')}
+                          
                           role="radio"
                           aria-checked={formData.accountType === 'checking'}
                         >
@@ -407,7 +407,7 @@ if (
                             "flex items-center space-x-2 p-3 border-2 rounded-lg cursor-pointer transition-all",
                             formData.accountType === 'savings' ? "border-blue-600 bg-blue-50 shadow-md" : "border-slate-300 hover:border-blue-400"
                           )}
-                          onClick={() => handleInputChange('accountType', 'savings')}
+                          
                           role="radio"
                           aria-checked={formData.accountType === 'savings'}
                         >
