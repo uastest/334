@@ -7,10 +7,10 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 border-t border-gray-800">
       <div className="container mx-auto px-4 py-16 max-w-7xl">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-12 mb-12">
           
           {/* Coluna 1: Logo e Social */}
-          <div className="col-span-2 md:col-span-2 space-y-4">
+          <div className="col-span-1 sm:col-span-2 md:col-span-2 space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="bg-blue-600 p-2 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-white" />

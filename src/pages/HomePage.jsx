@@ -159,7 +159,7 @@ export default function HomePage({ language }) {
         }} />
 
         <div className="relative z-10 container mx-auto px-4 max-w-6xl py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-10">
             <div className="text-white space-y-8 animate-fade-in">
               <div className="inline-flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-500/20 to-green-500/20 backdrop-blur-xl border border-blue-400/30 rounded-full hover:border-blue-400/60 transition-all duration-300">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -167,7 +167,7 @@ export default function HomePage({ language }) {
               </div>
 
               <div className="space-y-4">
-                <h1 className="text-7xl lg:text-8xl font-black leading-tight">
+                <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black leading-tight">
                   Compre<br />
                   <span className="bg-gradient-to-r from-blue-400 via-green-400 to-blue-400 bg-clip-text text-transparent animate-pulse">
                     Dólares
@@ -196,7 +196,7 @@ export default function HomePage({ language }) {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-12 border-t border-blue-500/20">
+              <div className="grid grid-cols-3 gap-4 pt-12 border-t border-blue-500/20 text-center sm:text-left">
                 <div>
                   <p className="text-3xl font-black text-green-400"><AnimatedNumber value={5} />K+</p>
                   <p className="text-blue-300 text-sm">Usuários Ativos</p>
@@ -212,7 +212,7 @@ export default function HomePage({ language }) {
               </div>
             </div>
 
-            <div className="relative h-96 lg:h-full hidden lg:flex items-center justify-center">
+            <div className="relative h-96 lg:h-full flex items-center justify-center lg:flex">
               <div className="relative w-full h-full flex items-center justify-center perspective">
                 <div 
                   className="absolute w-80 h-48 bg-gradient-to-br from-blue-500/30 to-green-500/30 backdrop-blur-xl border border-blue-400/50 rounded-2xl p-6 shadow-2xl"
@@ -360,11 +360,11 @@ export default function HomePage({ language }) {
       <section className="bg-gradient-to-b from-gray-50 to-white py-24">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-black mb-6 text-gray-900">Por que Câmbio Express?</h2>
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 text-gray-900">Por que Câmbio Express?</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">Especialista em câmbio para o Paraguai com as melhores taxas e atendimento premium</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { icon: Zap, title: 'Rapidez', desc: 'Transações internacionais entre países do bloco sul-americano costumam levar de 1 a 3 dias úteis. Nossa casa de câmbio, porém, realiza o processo normalmente no prazo MÍNIMO (1 DIA ÚTIL), utilizando depósitos diretos. O tempo final pode variar conforme o processamento do seu banco.', color: 'from-yellow-400 to-orange-500' },
               { icon: TrendingUp, title: 'Melhores Taxas', desc: 'Utilizamos a cotação do dólar do mercado atual, aplicando uma taxa de serviço de apenas 0,4%, entre as mais competitivas do mercado', color: 'from-green-400 to-emerald-500' },
@@ -394,7 +394,7 @@ export default function HomePage({ language }) {
       {/* ============ FINAL CTA ============ */}
       <section className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 py-24">
         <div className="container mx-auto px-4 max-w-4xl text-center text-white space-y-8">
-          <h2 className="text-6xl font-black">Pronto para começar?</h2>
+          <h2 className="text-4xl sm:text-6xl font-black">Pronto para começar?</h2>
           <p className="text-2xl text-white/90 font-semibold">Abra sua conta em 2 minutos e comece a enviar dólares para o Paraguai hoje mesmo.</p>
           <Button 
             onClick={() => navigate('/register')}
